@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upravljačka ploča / Dashboard</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #f4f4f4;
+            color: #000;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Sidebar */
+        aside {
+            width: 260px;
+            background-color: #fff;
+            border-right: 1px solid #ddd;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 30px 20px;
+        }
+
+        .logo-area h2 {
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 30px;
+            font-weight: 700;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #666;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: color 0.2s;
+        }
+
+        .nav-links a.active, .nav-links a:hover {
+            color: #000;
+            font-weight: 700;
+        }
+
+        .user-info {
+            font-size: 0.75rem;
+            color: #888;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+
+        /* Main Dashboard Content */
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            background-color: #fafafa;
+        }
+
+        header {
+            background-color: #fff;
+            padding: 20px 40px;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+        }
+
+        .dashboard-content {
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        /* Metrics / Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .stat-card {
+            background: #fff;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .stat-card h3 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: #666;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .stat-card .value {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        /* Content Management Section */
+        .card {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            padding: 25px;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .card-header h2 {
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn {
+            background: #000;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .btn:hover {
+            background: #333;
+        }
+
+        /* Table styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 12px 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: #666;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        tr:hover td {
+            background-color: #fcfcfc;
+        }
+
+        .actions-cell {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-link {
+            color: #000;
+            text-decoration: underline;
+            cursor: pointer;
+            font-size: 0.75rem;
+        }
+
+        .action-link.delete {
+            color: #c00;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar Navigation -->
+    <aside>
+        <div>
+            <div class="logo-area">
+                <h2>AdminPanel</h2>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#" class="active">Pregled (Overview)</a></li>
+                <li><a href="#">Romani</a></li>
+                <li><a href="#">Zbirke Priča</a></li>
+                <li><a href="#">Eseji / Publicistika</a></li>
+                <li><a href="#">Tekstovi</a></li>
+                <li><a href="#">Medijska arhiva</a></li>
+            </ul>
+        </div>
+        <div class="user-info">
+            Prijavljeni ste kao: <strong>Admin</strong>
+        </div>
+    </aside>
+
+    <!-- Main Workspace -->
+    <main>
+        <header>
+            <h1>Upravljanje Sadržajem</h1>
+            <button class="btn">+ Novi Unos</button>
+        </header>
+
+        <div class="dashboard-content">
+            
+            <!-- Quick Metrics -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Ukupno djela</h3>
+                    <div class="value">24</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Objavljeni tekstovi</h3>
+                    <div class="value">142</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Pregledi ovaj tjedan</h3>
+                    <div class="value">3.8k</div>
+                </div>
+            </div>
+
+            <!-- Content Table -->
+            <div class="card">
+                <div class="card-header">
+                    <h2>Nedavni Unosi (Knjige i Proza)</h2>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Naslov</th>
+                            <th>Kategorija</th>
+                            <th>Godina</th>
+                            <th>Status</th>
+                            <th>Akcije</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Crvena voda</strong></td>
+                            <td>Romani</td>
+                            <td>2017</td>
+                            <td>Objavljeno</td>
+                            <td class="actions-cell">
+                                <span class="action-link">Uredi</span>
+                                <span class="action-link delete">Obriši</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Sagrađeno bez cementa</strong></td>
+                            <td>Eseji / Publicistika</td>
+                            <td>2024</td>
+                            <td>Objavljeno</td>
+                            <td class="actions-cell">
+                                <span class="action-link">Uredi</span>
+                                <span class="action-link delete">Obriši</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Pokret otpora i drugi zapisi</strong></td>
+                            <td>Zbirke priča</td>
+                            <td>2021</td>
+                            <td>Skica (Draft)</td>
+                            <td class="actions-cell">
+                                <span class="action-link">Uredi</span>
+                                <span class="action-link delete">Obriši</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </main>
+
+</body>
+</html>
