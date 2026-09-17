@@ -74,12 +74,12 @@
             flex-direction: column;
             align-items: flex-end;
             padding: 15px;
-            opacity: 0.6; /* Lowered opacity */
+            opacity: 0.6;
             transition: opacity 0.3s ease;
         }
 
         .menu-btn:hover {
-            opacity: 1; /* Full opacity on hover */
+            opacity: 1;
         }
 
         .menu-line {
@@ -204,7 +204,7 @@
 
         /* Active state for hamburger button animation */
         body.menu-open .menu-btn {
-            opacity: 1; /* Keep fully visible when menu is open */
+            opacity: 1;
         }
 
         body.menu-open .menu-line:nth-child(1) {
@@ -276,7 +276,6 @@
         <ul class="menu-nav">
             <li><a href="#biography" class="menu-link">Biografija</a></li>
             
-            <!-- Expandable Submenu Item -->
             <li class="has-submenu" id="submenuParent">
                 <button class="submenu-toggle" id="submenuToggle" type="button">Knjige / Proza</button>
                 <ul class="submenu">
@@ -294,13 +293,12 @@
     <!-- Main Split Section -->
     <div class="hero-container">
         <div class="hero-left">
-            <h1 class="hero-title">
-                marija<br>
-                andrijašević
+            <h1 class="hero-title" id="siteTitle">
+                Jurica<br>
+                Pavičić
             </h1>
         </div>
         <div class="hero-right">
-            <!-- Placeholder portrait image -->
             <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1000&auto=format&fit=crop" alt="Jurica Pavičić">
         </div>
     </div>
@@ -313,6 +311,12 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // Load saved live title from dashboard storage if available
+            const savedTitle = localStorage.getItem('jurica_site_title');
+            if (savedTitle) {
+                document.getElementById('siteTitle').innerHTML = savedTitle.replace(/\n/g, '<br>');
+            }
+
             const menuToggle = document.getElementById('menuToggle');
             const menuOverlay = document.getElementById('menuOverlay');
             const menuLabel = document.getElementById('menuLabel');
