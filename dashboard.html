@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upravljačka ploča / Dashboard</title>
+    <title>Uređivanje Naslovnice / Live Editor</title>
     <style>
         * {
             box-sizing: border-box;
@@ -48,27 +48,20 @@
 
         .nav-links a {
             text-decoration: none;
-            color: #666;
+            color: #000;
             font-size: 0.9rem;
-            font-weight: 500;
+            font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            transition: color 0.2s;
         }
 
-        .nav-links a.active, .nav-links a:hover {
-            color: #000;
-            font-weight: 700;
+        .back-link {
+            font-size: 0.8rem;
+            color: #666;
+            text-decoration: underline;
         }
 
-        .user-info {
-            font-size: 0.75rem;
-            color: #888;
-            border-top: 1px solid #eee;
-            padding-top: 15px;
-        }
-
-        /* Main Dashboard Content */
+        /* Main Area */
         main {
             flex: 1;
             display: flex;
@@ -81,9 +74,6 @@
             background-color: #fff;
             padding: 20px 40px;
             border-bottom: 1px solid #ddd;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
         }
 
         header h1 {
@@ -92,216 +82,128 @@
             letter-spacing: -0.5px;
         }
 
-        .dashboard-content {
+        .editor-container {
             padding: 40px;
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
+            max-width: 700px;
         }
 
-        /* Metrics / Stats Grid */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-        }
-
-        .stat-card {
-            background: #fff;
-            padding: 20px;
-            border: 1px solid #e0e0e0;
-        }
-
-        .stat-card h3 {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            color: #666;
-            letter-spacing: 0.5px;
-            margin-bottom: 8px;
-        }
-
-        .stat-card .value {
-            font-size: 1.8rem;
-            font-weight: 700;
-        }
-
-        /* Content Management Section */
         .card {
             background: #fff;
             border: 1px solid #e0e0e0;
-            padding: 25px;
-        }
-
-        .card-header {
+            padding: 30px;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
+            flex-direction: column;
+            gap: 20px;
         }
 
-        .card-header h2 {
-            font-size: 0.95rem;
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        label {
+            font-size: 0.75rem;
             text-transform: uppercase;
+            font-weight: 700;
             letter-spacing: 0.5px;
+            color: #333;
+        }
+
+        textarea {
+            width: 100%;
+            height: 120px;
+            padding: 12px;
+            font-family: inherit;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            resize: vertical;
         }
 
         .btn {
             background: #000;
             color: #fff;
             border: none;
-            padding: 8px 16px;
+            padding: 12px 20px;
             font-size: 0.75rem;
             text-transform: uppercase;
             letter-spacing: 1px;
             cursor: pointer;
             font-weight: 600;
+            align-self: flex-start;
         }
 
         .btn:hover {
             background: #333;
         }
 
-        /* Table styling */
-        table {
-            width: 100%;
-            border-collapse: collapse;
+        .success-msg {
             font-size: 0.85rem;
-        }
-
-        th, td {
-            text-align: left;
-            padding: 12px 10px;
-            border-bottom: 1px solid #eee;
-        }
-
-        th {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            color: #666;
-            letter-spacing: 0.5px;
-            font-weight: 600;
-        }
-
-        tr:hover td {
-            background-color: #fcfcfc;
-        }
-
-        .actions-cell {
-            display: flex;
-            gap: 10px;
-        }
-
-        .action-link {
-            color: #000;
-            text-decoration: underline;
-            cursor: pointer;
-            font-size: 0.75rem;
-        }
-
-        .action-link.delete {
-            color: #c00;
+            color: green;
+            display: none;
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
 
-    <!-- Sidebar Navigation -->
+    <!-- Sidebar -->
     <aside>
         <div>
             <div class="logo-area">
-                <h2>AdminPanel</h2>
+                <h2>Live Editor</h2>
             </div>
             <ul class="nav-links">
-                <li><a href="#" class="active">Pregled (Overview)</a></li>
-                <li><a href="#">Romani</a></li>
-                <li><a href="#">Zbirke Priča</a></li>
-                <li><a href="#">Eseji / Publicistika</a></li>
-                <li><a href="#">Tekstovi</a></li>
-                <li><a href="#">Medijska arhiva</a></li>
+                <li><a href="#">Uredi Naslovnicu</a></li>
             </ul>
         </div>
-        <div class="user-info">
-            Prijavljeni ste kao: <strong>Admin</strong>
+        <div>
+            <a href="index.html" class="back-link">← Natrag na web stranicu</a>
         </div>
     </aside>
 
-    <!-- Main Workspace -->
+    <!-- Main Content -->
     <main>
         <header>
-            <h1>Upravljanje Sadržajem</h1>
-            <button class="btn">+ Novi Unos</button>
+            <h1>Brzo Uređivanje Teksta</h1>
         </header>
 
-        <div class="dashboard-content">
-            
-            <!-- Quick Metrics -->
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <h3>Ukupno djela</h3>
-                    <div class="value">24</div>
-                </div>
-                <div class="stat-card">
-                    <h3>Objavljeni tekstovi</h3>
-                    <div class="value">142</div>
-                </div>
-                <div class="stat-card">
-                    <h3>Pregledi ovaj tjedan</h3>
-                    <div class="value">3.8k</div>
-                </div>
-            </div>
-
-            <!-- Content Table -->
+        <div class="editor-container">
             <div class="card">
-                <div class="card-header">
-                    <h2>Nedavni Unosi (Knjige i Proza)</h2>
+                <div class="form-group">
+                    <label for="titleInput">Glavni Naslov (Ime i prezime):</label>
+                    <textarea id="titleInput" placeholder="Jurica&#10;Pavičić"></textarea>
+                    <span style="font-size: 0.75rem; color: #666;">Koristite novi red (Enter) za prelazak u novi red kao na naslovnici.</span>
                 </div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Naslov</th>
-                            <th>Kategorija</th>
-                            <th>Godina</th>
-                            <th>Status</th>
-                            <th>Akcije</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>Crvena voda</strong></td>
-                            <td>Romani</td>
-                            <td>2017</td>
-                            <td>Objavljeno</td>
-                            <td class="actions-cell">
-                                <span class="action-link">Uredi</span>
-                                <span class="action-link delete">Obriši</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><strong>Sagrađeno bez cementa</strong></td>
-                            <td>Eseji / Publicistika</td>
-                            <td>2024</td>
-                            <td>Objavljeno</td>
-                            <td class="actions-cell">
-                                <span class="action-link">Uredi</span>
-                                <span class="action-link delete">Obriši</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><strong>Pokret otpora i drugi zapisi</strong></td>
-                            <td>Zbirke priča</td>
-                            <td>2021</td>
-                            <td>Skica (Draft)</td>
-                            <td class="actions-cell">
-                                <span class="action-link">Uredi</span>
-                                <span class="action-link delete">Obriši</span>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
 
+                <button class="btn" id="saveBtn">Spremi promjene</button>
+                <div class="success-msg" id="successMsg">Promjene su uspješno spremljene!</div>
+            </div>
         </div>
     </main>
+
+    <script>
+        const titleInput = document.getElementById('titleInput');
+        const saveBtn = document.getElementById('saveBtn');
+        const successMsg = document.getElementById('successMsg');
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const saved = localStorage.getItem('jurica_site_title');
+            if (saved) {
+                titleInput.value = saved;
+            } else {
+                titleInput.value = "Jurica\nPavičić";
+            }
+        });
+
+        saveBtn.addEventListener('click', () => {
+            localStorage.setItem('jurica_site_title', titleInput.value);
+            successMsg.style.display = 'block';
+            setTimeout(() => {
+                successMsg.style.display = 'none';
+            }, 3000);
+        });
+    </script>
 
 </body>
 </html>
