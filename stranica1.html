@@ -108,17 +108,17 @@
             color: #000;
         }
 
-        /* Main Content Layout - Wider Text Container */
+        /* Main Content Layout - Expanded container width to accommodate larger image */
         .content-container {
-            max-width: 900px;
+            max-width: 1050px;
             margin: 0 auto;
             padding: 140px 40px 100px 40px;
         }
 
         .book-header {
             display: grid;
-            grid-template-columns: 280px 1fr;
-            gap: 50px;
+            grid-template-columns: 360px 1fr; /* Increased image column from 280px to 360px */
+            gap: 60px;
             align-items: start;
             margin-bottom: 60px;
         }
@@ -126,7 +126,7 @@
         .book-cover {
             width: 100%;
             border: 1px solid #eaeaea;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.06);
         }
 
         .book-cover img {
@@ -304,7 +304,7 @@
             transform: translateY(-7.5px) rotate(-45deg);
         }
 
-        @media (max-width: 800px) {
+        @media (max-width: 900px) {
             body::after { display: none; }
             .top-bar { padding: 20px; }
             .content-container { padding: 100px 20px 60px 20px; }
@@ -313,7 +313,7 @@
                 gap: 30px;
             }
             .book-cover {
-                max-width: 240px;
+                max-width: 300px;
                 margin: 0 auto;
             }
         }
@@ -353,32 +353,27 @@
     <main class="content-container">
         <div class="book-header">
             <div class="book-cover">
-                <!-- Replace with actual book cover image link -->
                 <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=800&auto=format&fit=crop" alt="Usta puna mora">
             </div>
             <div class="book-meta-info">
                 <h1>Naslov</h1>
-                <div class="subtitle">Roman</div>
+                <div class="book-subtitle">Roman</div>
                 <div class="book-details-grid">
                     <span><strong>Godina:</strong> 2024.</span>
                     <span><strong>Izdavač:</strong> </span>
                     <span><strong>Info:</strong> </span>
-                    <span><strong>ISBN:</strong>1234...</span>
+                    <span><strong>ISBN:</strong> 1234...</span>
                 </div>
             </div>
         </div>
 
         <div class="book-body">
             <h2>O knjizi</h2>
-            <p>
-lorem ipsum...            </p>
-            <p>
-dolor sit amet...            </p>
+            <p>lorem ipsum...</p>
+            <p>dolor sit amet...</p>
 
-            <h2>sekcija 2</h2>
-            <p>
-                <em>Tekst...</em>
-            </p>
+            <h2>Sekcija 2</h2>
+            <p><em>Tekst...</em></p>
         </div>
     </main>
 
