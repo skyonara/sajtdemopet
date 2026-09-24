@@ -40,7 +40,7 @@
         .form-group { margin-bottom: 20px; }
         label { display: block; font-weight: 600; margin-bottom: 6px; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 1px; color: #555; }
         input[type="text"], textarea { width: 100%; padding: 12px; border: 1px solid #ddd; font-family: inherit; font-size: 0.95rem; }
-        textarea { height: 100px; font-family: monospace; }
+        textarea { height: 120px; }
         
         .save-btn { background: #000; color: #fff; border: none; padding: 12px 24px; cursor: pointer; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1.5px; }
         .save-btn:hover { background: #333; }
@@ -69,6 +69,7 @@
                 <h2>Admin Hub</h2>
                 <ul class="nav-links">
                     <li><button class="tab-btn active" data-target="index-panel">Naslovnica (Index)</button></li>
+                    <li><button class="tab-btn" data-target="romani-panel">Romani (Stranica 1)</button></li>
                     <li><button class="tab-btn" data-target="book-panel">Usta puna mora (Knjiga)</button></li>
                 </ul>
             </div>
@@ -79,12 +80,12 @@
         </aside>
 
         <main>
-            <!-- 1. Index Page Panel (Maps to #siteTitle & image) -->
+            <!-- 1. Index Page Panel -->
             <section id="index-panel" class="panel active">
                 <h1>Uređivanje: Naslovnica</h1>
                 <form id="form-index" data-storage="site_data_index">
                     <div class="form-group">
-                        <label>Glavni naslov (HTML dozvoljen za prijelome redaka npr. &lt;br&gt;)</label>
+                        <label>Glavni naslov (HTML dozvoljen npr. &lt;br&gt;)</label>
                         <textarea name="siteTitle">Jurica&lt;br&gt;Pavičić</textarea>
                     </div>
                     <div class="form-group">
@@ -96,7 +97,24 @@
                 </form>
             </section>
 
-            <!-- 2. Book Page Panel -->
+            <!-- 2. Romani Page Panel -->
+            <section id="romani-panel" class="panel">
+                <h1>Uređivanje: Romani (Stranica 1)</h1>
+                <form id="form-romani" data-storage="site_data_romani">
+                    <div class="form-group">
+                        <label>Naslov stranice / Sekcije</label>
+                        <input type="text" name="pageTitle" value="Romani">
+                    </div>
+                    <div class="form-group">
+                        <label>Sadržaj / Opis (HTML dozvoljen)</label>
+                        <textarea name="pageContent">Ovdje se nalaze romani...</textarea>
+                    </div>
+                    <button type="submit" class="save-btn">Spremi promjene</button>
+                    <span class="success-msg">Spremljeno!</span>
+                </form>
+            </section>
+
+            <!-- 3. Book Page Panel -->
             <section id="book-panel" class="panel">
                 <h1>Uređivanje: Usta puna mora</h1>
                 <form id="form-book" data-storage="book_data_usta_puna_mora">
