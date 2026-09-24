@@ -3,435 +3,241 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Usta puna mora — Jurica Pavičić</title>
+    <title>Admin Dashboard</title>
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; display: flex; height: 100vh; background: #f4f4f4; color: #111; }
+        
+        /* Login Screen */
+        #loginOverlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: #fff; z-index: 99999; display: flex; justify-content: center; align-items: center;
         }
+        .login-box { width: 100%; max-width: 360px; padding: 40px; text-align: center; }
+        .login-box h2 { font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 24px; }
+        .login-box input { width: 100%; padding: 12px; border: 1px solid #ddd; margin-bottom: 15px; font-family: inherit; font-size: 0.95rem; text-align: center; }
+        .login-box button { width: 100%; background: #000; color: #fff; border: none; padding: 12px; cursor: pointer; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1.5px; }
+        .login-box button:hover { background: #333; }
+        .login-error { color: #b22222; font-size: 0.8rem; margin-top: 10px; display: none; }
 
-        body, html {
-            height: 100%;
-            width: 100%;
-            background-color: #fff;
-            color: #000;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            overflow-x: hidden;
-            opacity: 0;
-            animation: fadeIn 0.5s ease-in-out forwards;
-        }
+        /* Dashboard Layout */
+        #dashboardContainer { display: none; width: 100%; height: 100%; }
+        aside { width: 260px; background: #111; color: #fff; padding: 30px 20px; display: flex; flex-direction: column; justify-content: space-between; }
+        aside h2 { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 30px; opacity: 0.7; }
+        .nav-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+        .nav-links button { background: none; border: none; color: #aaa; text-align: left; font-size: 0.9rem; padding: 10px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: color 0.2s, background 0.2s; font-family: inherit; width: 100%; }
+        .nav-links button:hover, .nav-links button.active { color: #fff; background: rgba(255,255,255,0.08); }
+        
+        .admin-actions { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; display: flex; flex-direction: column; gap: 10px; }
+        .admin-actions a, .admin-actions button { color: #aaa; background: none; border: none; text-align: left; text-decoration: none; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; font-family: inherit; padding: 0; }
+        .admin-actions a:hover, .admin-actions button:hover { color: #fff; }
 
-        @keyframes fadeIn {
-            to { opacity: 1; }
-        }
-
-        body::after {
-            content: '';
-            position: fixed;
-            top: 15px;
-            left: 15px;
-            right: 15px;
-            bottom: 15px;
-            border: 1px solid rgba(0, 0, 0, 0.08);
-            pointer-events: none;
-            z-index: 9999;
-        }
-
-        .top-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 35px 50px;
-            z-index: 1000;
-            background: linear-gradient(to bottom, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0) 100%);
-        }
-
-        .back-link {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            color: #000;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            opacity: 0.7;
-            transition: opacity 0.3s ease;
-        }
-
-        .back-link:hover {
-            opacity: 1;
-        }
-
-        .menu-btn {
-            background: transparent;
-            border: none;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            padding: 10px;
-            opacity: 0.5;
-            transition: opacity 0.3s ease;
-        }
-
-        .menu-btn:hover {
-            opacity: 1;
-        }
-
-        .menu-line {
-            display: block;
-            width: 26px;
-            height: 1.5px;
-            background-color: #000;
-            margin-bottom: 6px;
-            transition: transform 0.3s ease, opacity 0.3s ease;
-        }
-
-        .menu-line:last-of-type {
-            margin-bottom: 0;
-        }
-
-        .menu-text {
-            font-size: 0.6rem;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-top: 6px;
-            color: #000;
-        }
-
-        .content-container {
-            max-width: 1550px;
-            margin: 0 auto;
-            padding: 140px 70px 100px 70px;
-        }
-
-        .book-header {
-            display: grid;
-            grid-template-columns: 560px 1fr;
-            gap: 90px;
-            align-items: start;
-            margin-bottom: 80px;
-        }
-
-        .book-cover {
-            width: 100%;
-            border: 1px solid #eaeaea;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.08);
-        }
-
-        .book-cover img {
-            width: 100%;
-            height: auto;
-            display: block;
-            filter: contrast(102%);
-        }
-
-        .book-meta-info h1 {
-            font-size: clamp(2.5rem, 4vw, 4rem);
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: -1.5px;
-            line-height: 1.05;
-            margin-bottom: 18px;
-        }
-
-        .book-subtitle {
-            font-size: 1.25rem;
-            color: #666;
-            margin-bottom: 32px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .book-details-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px 28px;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            padding-top: 28px;
-            border-top: 1px solid #eee;
-            color: #444;
-        }
-
-        .book-details-grid span strong {
-            color: #000;
-        }
-
-        .book-body {
-            font-size: 1.1rem;
-            line-height: 1.8;
-            color: #222;
-            max-width: 1100px;
-        }
-
-        .book-body h2 {
-            font-size: 1.5rem;
-            text-transform: uppercase;
-            letter-spacing: -0.5px;
-            margin-top: 50px;
-            margin-bottom: 18px;
-            font-weight: 600;
-        }
-
-        .book-body p {
-            margin-bottom: 26px;
-        }
-
-        .menu-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background-color: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(10px);
-            z-index: 99998;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.4s ease, visibility 0.4s ease;
-            overflow-y: auto;
-            padding: 40px 20px;
-        }
-
-        .menu-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .menu-nav {
-            list-style: none;
-            text-align: center;
-        }
-
-        .menu-nav > li {
-            margin-bottom: 24px;
-        }
-
-        .menu-nav a, .submenu-toggle {
-            font-size: clamp(1.5rem, 3.5vw, 2.8rem);
-            text-decoration: none;
-            color: #000;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: -1px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-family: inherit;
-            transition: color 0.2s, letter-spacing 0.3s;
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .menu-nav a:hover, .submenu-toggle:hover {
-            color: #555;
-            letter-spacing: 0px;
-        }
-
-        .has-submenu {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .submenu-toggle::after {
-            content: '+';
-            font-size: 1.2rem;
-            font-weight: 300;
-            transition: transform 0.3s ease;
-        }
-
-        .has-submenu.open .submenu-toggle::after {
-            transform: rotate(45deg);
-        }
-
-        .submenu {
-            list-style: none;
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-            text-align: center;
-        }
-
-        .has-submenu.open .submenu {
-            max-height: 220px;
-        }
-
-        .submenu li {
-            margin-top: 14px;
-        }
-
-        .submenu a {
-            font-size: clamp(1rem, 2vw, 1.4rem);
-            font-weight: 400;
-            color: #555;
-            letter-spacing: -0.5px;
-        }
-
-        .submenu a:hover {
-            color: #000;
-            letter-spacing: 0px;
-        }
-
-        body.menu-open .menu-btn {
-            opacity: 1;
-        }
-        body.menu-open .menu-line:nth-child(1) {
-            transform: translateY(7.5px) rotate(45deg);
-        }
-        body.menu-open .menu-line:nth-child(2) {
-            opacity: 0;
-        }
-        body.menu-open .menu-line:nth-child(3) {
-            transform: translateY(-7.5px) rotate(-45deg);
-        }
-
-        @media (max-width: 900px) {
-            body::after { display: none; }
-            .top-bar { padding: 20px; }
-            .content-container { padding: 100px 20px 60px 20px; }
-            .book-header {
-                grid-template-columns: 1fr;
-                gap: 30px;
-            }
-            .book-cover {
-                max-width: 380px;
-                margin: 0 auto;
-            }
-        }
+        main { flex: 1; padding: 50px; overflow-y: auto; background: #fff; }
+        .panel { display: none; max-width: 800px; }
+        .panel.active { display: block; }
+        
+        h1 { font-size: 1.5rem; text-transform: uppercase; letter-spacing: -0.5px; margin-bottom: 25px; border-bottom: 1px solid #eee; padding-bottom: 15px; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; font-weight: 600; margin-bottom: 6px; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 1px; color: #555; }
+        input[type="text"], textarea { width: 100%; padding: 12px; border: 1px solid #ddd; font-family: inherit; font-size: 0.95rem; }
+        textarea { height: 120px; }
+        
+        .save-btn { background: #000; color: #fff; border: none; padding: 12px 24px; cursor: pointer; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1.5px; }
+        .save-btn:hover { background: #333; }
+        .success-msg { color: #2e7d32; font-size: 0.85rem; margin-left: 15px; opacity: 0; transition: opacity 0.3s; }
+        .success-msg.show { opacity: 1; }
     </style>
 </head>
 <body>
 
-    <!-- Top Navigation Bar -->
-    <div class="top-bar">
-        <a href="index.html" class="back-link">← Povratak na naslovnicu</a>
-        <button class="menu-btn" id="menuToggle" type="button" aria-label="Toggle menu">
-            <span class="menu-line"></span>
-            <span class="menu-line"></span>
-            <span class="menu-line"></span>
-            <span class="menu-text" id="menuLabel">meni</span>
-        </button>
+    <!-- Password Login Screen -->
+    <div id="loginOverlay">
+        <div class="login-box">
+            <h2>Admin Prijava</h2>
+            <form id="loginForm">
+                <input type="password" id="adminPasswordInput" placeholder="Unesite lozinku" required>
+                <button type="submit">Prijava</button>
+                <div class="login-error" id="loginError">Netočna lozinka.</div>
+            </form>
+        </div>
     </div>
 
-    <!-- Fullscreen Menu Overlay -->
-    <div class="menu-overlay" id="menuOverlay">
-        <ul class="menu-nav">
-            <li><a href="index.html#biography" class="menu-link">Biografija</a></li>
-            <li class="has-submenu" id="submenuParent">
-                <button class="submenu-toggle" id="submenuToggle" type="button">Knjige / Proza</button>
-                <ul class="submenu">
-                    <li><a href="stranica1.html" class="menu-link">Romani</a></li>
-                    <li><a href="#stories" class="menu-link">Zbirke priča</a></li>
-                    <li><a href="#essays" class="menu-link">Eseji / Publicistika</a></li>
+    <!-- Main Dashboard Container -->
+    <div id="dashboardContainer">
+        <aside>
+            <div>
+                <h2>Admin Hub</h2>
+                <ul class="nav-links">
+                    <li><button class="tab-btn active" data-target="index-panel">Naslovnica (Index)</button></li>
+                    <li><button class="tab-btn" data-target="romani-panel">Romani (Stranica 1)</button></li>
+                    <li><button class="tab-btn" data-target="book-panel">Usta puna mora (Knjiga)</button></li>
                 </ul>
-            </li>
-            <li><a href="index.html#texts" class="menu-link">Tekstovi</a></li>
-            <li><a href="index.html#contact" class="menu-link">Kontakt</a></li>
-        </ul>
+            </div>
+            <div class="admin-actions">
+                <a href="index.html" target="_blank">Pogledaj naslovnicu ↗</a>
+                <button id="logoutBtn" type="button">Odjava</button>
+            </div>
+        </aside>
+
+        <main>
+            <!-- 1. Index Page Panel -->
+            <section id="index-panel" class="panel active">
+                <h1>Uređivanje: Naslovnica</h1>
+                <form id="form-index" data-storage="site_data_index">
+                    <div class="form-group">
+                        <label>Glavni naslov (HTML dozvoljen npr. &lt;br&gt;)</label>
+                        <textarea name="siteTitle">Jurica&lt;br&gt;Pavičić</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>URL slike na naslovnici (Desna strana)</label>
+                        <input type="text" name="heroImageSrc" value="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1000&auto=format&fit=crop">
+                    </div>
+                    <button type="submit" class="save-btn">Spremi promjene</button>
+                    <span class="success-msg">Spremljeno!</span>
+                </form>
+            </section>
+
+            <!-- 2. Romani Page Panel -->
+            <section id="romani-panel" class="panel">
+                <h1>Uređivanje: Romani (Stranica 1)</h1>
+                <form id="form-romani" data-storage="site_data_romani">
+                    <div class="form-group">
+                        <label>Naslov stranice / Sekcije</label>
+                        <input type="text" name="pageTitle" value="Romani">
+                    </div>
+                    <div class="form-group">
+                        <label>Sadržaj / Opis (HTML dozvoljen)</label>
+                        <textarea name="pageContent">Ovdje se nalaze romani...</textarea>
+                    </div>
+                    <button type="submit" class="save-btn">Spremi promjene</button>
+                    <span class="success-msg">Spremljeno!</span>
+                </form>
+            </section>
+
+            <!-- 3. Book Page Panel (Fully Updated) -->
+            <section id="book-panel" class="panel">
+                <h1>Uređivanje: Usta puna mora</h1>
+                <form id="form-book" data-storage="book_data_usta_puna_mora">
+                    <div class="form-group">
+                        <label>Naslov knjige</label>
+                        <input type="text" name="bookTitle" value="Usta puna mora">
+                    </div>
+                    <div class="form-group">
+                        <label>Podnaslov / Vrsta</label>
+                        <input type="text" name="bookSubtitle" value="Roman">
+                    </div>
+                    <div class="form-group">
+                        <label>Godina</label>
+                        <input type="text" name="bookYear" value="2024.">
+                    </div>
+                    <div class="form-group">
+                        <label>Izdavač</label>
+                        <input type="text" name="bookPublisher" value="">
+                    </div>
+                    <div class="form-group">
+                        <label>Info</label>
+                        <input type="text" name="bookInfo" value="">
+                    </div>
+                    <div class="form-group">
+                        <label>ISBN</label>
+                        <input type="text" name="bookIsbn" value="1234...">
+                    </div>
+                    <div class="form-group">
+                        <label>URL slike korica</label>
+                        <input type="text" name="bookImageSrc" value="https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=800&auto=format&fit=crop">
+                    </div>
+                    <div class="form-group">
+                        <label>Glavni tekst / Sadržaj (HTML dozvoljen)</label>
+                        <textarea name="bookBodyContent" style="height: 200px; font-family: inherit;">&lt;h2&gt;O knjizi&lt;/h2&gt;&lt;p&gt;lorem ipsum...&lt;/p&gt;</textarea>
+                    </div>
+                    <button type="submit" class="save-btn">Spremi promjene</button>
+                    <span class="success-msg">Spremljeno!</span>
+                </form>
+            </section>
+        </main>
     </div>
-
-    <!-- Main Content Area -->
-    <main class="content-container">
-        <div class="book-header">
-            <div class="book-cover">
-                <img id="bookImage" src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=800&auto=format&fit=crop" alt="Usta puna mora">
-            </div>
-            <div class="book-meta-info">
-                <h1 id="bookTitle">Usta puna mora</h1>
-                <div class="book-subtitle" id="bookSubtitle">Roman</div>
-                <div class="book-details-grid">
-                    <span><strong>Godina:</strong> <span id="bookYear">2024.</span></span>
-                    <span><strong>Izdavač:</strong> <span id="bookPublisher"></span></span>
-                    <span><strong>Info:</strong> <span id="bookInfo"></span></span>
-                    <span><strong>ISBN:</strong> <span id="bookIsbn">1234...</span></span>
-                </div>
-            </div>
-        </div>
-
-        <div class="book-body" id="bookBodyContent">
-            <h2>O knjizi</h2>
-            <p>lorem ipsum...</p>
-            <p>dolor sit amet...</p>
-
-            <h2>Sekcija 2</h2>
-            <p><em>Tekst...</em></p>
-        </div>
-    </main>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Load saved edits from dashboard storage
-            const savedBookData = JSON.parse(localStorage.getItem('book_data_usta_puna_mora'));
-            if (savedBookData) {
-                const bookTitle = document.getElementById('bookTitle');
-                if (bookTitle && savedBookData.bookTitle) bookTitle.innerText = savedBookData.bookTitle;
+        const CORRECT_PASSWORD = 'tvoja_lozinka'; 
+        const sessionKey = 'admin_logged_in_auth';
 
-                const bookSubtitle = document.getElementById('bookSubtitle');
-                if (bookSubtitle && savedBookData.bookSubtitle) bookSubtitle.innerText = savedBookData.bookSubtitle;
+        const loginOverlay = document.getElementById('loginOverlay');
+        const dashboardContainer = document.getElementById('dashboardContainer');
+        const loginForm = document.getElementById('loginForm');
+        const adminPasswordInput = document.getElementById('adminPasswordInput');
+        const loginError = document.getElementById('loginError');
+        const logoutBtn = document.getElementById('logoutBtn');
 
-                const bookImage = document.getElementById('bookImage');
-                if (bookImage && savedBookData.bookImageSrc) bookImage.src = savedBookData.bookImageSrc;
+        if (sessionStorage.getItem(sessionKey) === 'true') {
+            unlockDashboard();
+        }
 
-                const bookYear = document.getElementById('bookYear');
-                if (bookYear && savedBookData.bookYear) bookYear.innerText = savedBookData.bookYear;
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (adminPasswordInput.value === CORRECT_PASSWORD) {
+                sessionStorage.setItem(sessionKey, 'true');
+                unlockDashboard();
+            } else {
+                loginError.style.display = 'block';
+                adminPasswordInput.value = '';
+            }
+        });
 
-                const bookPublisher = document.getElementById('bookPublisher');
-                if (bookPublisher && savedBookData.bookPublisher) bookPublisher.innerText = savedBookData.bookPublisher;
+        logoutBtn.addEventListener('click', () => {
+            sessionStorage.removeItem(sessionKey);
+            dashboardContainer.style.display = 'none';
+            loginOverlay.style.display = 'flex';
+            adminPasswordInput.value = '';
+        });
 
-                const bookInfo = document.getElementById('bookInfo');
-                if (bookInfo && savedBookData.bookInfo) bookInfo.innerText = savedBookData.bookInfo;
+        function unlockDashboard() {
+            loginOverlay.style.display = 'none';
+            dashboardContainer.style.display = 'flex';
+        }
 
-                const bookIsbn = document.getElementById('bookIsbn');
-                if (bookIsbn && savedBookData.bookIsbn) bookIsbn.innerText = savedBookData.bookIsbn;
+        // Tab Switching
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const panels = document.querySelectorAll('.panel');
 
-                const bookBodyContent = document.getElementById('bookBodyContent');
-                if (bookBodyContent && savedBookData.bookBodyContent) bookBodyContent.innerHTML = savedBookData.bookBodyContent;
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                tabBtns.forEach(b => b.classList.remove('active'));
+                panels.forEach(p => p.classList.remove('active'));
+
+                btn.classList.add('active');
+                document.getElementById(btn.getAttribute('data-target')).classList.add('active');
+            });
+        });
+
+        // Form Load/Save via localStorage
+        const forms = document.querySelectorAll('form[data-storage]');
+
+        forms.forEach(form => {
+            const storageKey = form.getAttribute('data-storage');
+            const successMsg = form.querySelector('.success-msg');
+
+            const savedData = JSON.parse(localStorage.getItem(storageKey));
+            if (savedData) {
+                for (const [key, value] of Object.entries(savedData)) {
+                    if (form.elements[key]) {
+                        form.elements[key].value = value;
+                    }
+                }
             }
 
-            // Menu interactions
-            const menuToggle = document.getElementById('menuToggle');
-            const menuOverlay = document.getElementById('menuOverlay');
-            const menuLabel = document.getElementById('menuLabel');
-            const menuLinks = document.querySelectorAll('.menu-link');
-            const submenuParent = document.getElementById('submenuParent');
-            const submenuToggle = document.getElementById('submenuToggle');
-
-            if (!menuToggle || !menuOverlay) return;
-
-            menuToggle.addEventListener('click', (e) => {
+            form.addEventListener('submit', (e) => {
                 e.preventDefault();
-                document.body.classList.toggle('menu-open');
-                menuOverlay.classList.toggle('active');
-                menuLabel.innerText = menuOverlay.classList.contains('active') ? 'zatvori' : 'meni';
-                if (!menuOverlay.classList.contains('active')) submenuParent.classList.remove('open');
-            });
+                const formData = new FormData(form);
+                const dataObject = {};
 
-            submenuToggle.addEventListener('click', (e) => {
-                e.stopPropagation();
-                submenuParent.classList.toggle('open');
-            });
-
-            menuLinks.forEach(link => {
-                link.addEventListener('click', () => {
-                    document.body.classList.remove('menu-open');
-                    menuOverlay.classList.remove('active');
-                    menuLabel.innerText = 'meni';
-                    submenuParent.classList.remove('open');
+                formData.forEach((value, key) => {
+                    dataObject[key] = value;
                 });
+
+                localStorage.setItem(storageKey, JSON.stringify(dataObject));
+
+                successMsg.classList.add('show');
+                setTimeout(() => { successMsg.classList.remove('show'); }, 2500);
             });
         });
     </script>
