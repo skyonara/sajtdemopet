@@ -351,55 +351,68 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const siteTitle = document.getElementById('siteTitle');
+    document.addEventListener('DOMContentLoaded', () => {
+        // 1. Load saved index content from localStorage
+        try {
+            const savedIndexData = JSON.parse(localStorage.getItem('site_data_index'));
+            console.log("Loaded index data from storage:", savedIndexData); // Check F12 Console
 
-            // Load saved changes from localStorage if any were made previously
-            const savedTitle = localStorage.getItem('jurica_site_title');
-            if (savedTitle) {
-                siteTitle.innerHTML = savedTitle;
-            }
+            if (savedIndexData) {
+                const siteTitle = document.getElementById('siteTitle');
+                if (siteTitle && savedIndexData.siteTitle) {
+                    // Use innerHTML so <br> tags work properly
+                    siteTitle.innerHTML = savedIndexData.siteTitle;
+                }
 
-            // Standard menu interactions
-            const menuToggle = document.getElementById('menuToggle');
-            const menuOverlay = document.getElementById('menuOverlay');
-            const menuLabel = document.getElementById('menuLabel');
-            const menuLinks = document.querySelectorAll('.menu-link');
-            const submenuParent = document.getElementById('submenuParent');
-            const submenuToggle = document.getElementById('submenuToggle');
-
-            if (!menuToggle || !menuOverlay) return;
-
-            function toggleMenu(e) {
-                if (e) e.preventDefault();
-                document.body.classList.toggle('menu-open');
-                menuOverlay.classList.toggle('active');
-                
-                if (menuOverlay.classList.contains('active')) {
-                    menuLabel.innerText = 'zatvori';
-                } else {
-                    menuLabel.innerText = 'meni';
-                    submenuParent.classList.remove('open');
+                const heroImg = document.querySelector('.hero-right img');
+                if (heroImg && savedIndexData.heroImageSrc) {
+                    heroImg.src = savedIndexData.heroImageSrc;
                 }
             }
+        } catch (err) {
+            console.error("Error loading localStorage data:", err);
+        }
 
-            menuToggle.addEventListener('click', toggleMenu);
+        // 2. Standard menu interactions
+        const menuToggle = document.getElementById('menuToggle');
+        const menuOverlay = document.getElementById('menuOverlay');
+        const menuLabel = document.getElementById('menuLabel');
+        const menuLinks = document.querySelectorAll('.menu-link');
+        const submenuParent = document.getElementById('submenuParent');
+        const submenuToggle = document.getElementById('submenuToggle');
 
-            submenuToggle.addEventListener('click', (e) => {
-                e.stopPropagation();
-                submenuParent.classList.toggle('open');
-            });
+        if (!menuToggle || !menuOverlay) return;
 
-            menuLinks.forEach(link => {
-                link.addEventListener('click', () => {
-                    document.body.classList.remove('menu-open');
-                    menuOverlay.classList.remove('active');
-                    menuLabel.innerText = 'meni';
-                    submenuParent.classList.remove('open');
-                });
+        function toggleMenu(e) {
+            if (e) e.preventDefault();
+            document.body.classList.toggle('menu-open');
+            menuOverlay.classList.toggle('active');
+            
+            if (menuOverlay.classList.contains('active')) {
+                menuLabel.innerText = 'zatvori';
+            } else {
+                menuLabel.innerText = 'meni';
+                submenuParent.classList.remove('open');
+            }
+        }
+
+        menuToggle.addEventListener('click', toggleMenu);
+
+        submenuToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            submenuParent.classList.toggle('open');
+        });
+
+        menuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                document.body.classList.remove('menu-open');
+                menuOverlay.classList.remove('active');
+                menuLabel.innerText = 'meni';
+                submenuParent.classList.remove('open');
             });
         });
-    </script>
+    });
+</script>
 
 </body>
 </html>
