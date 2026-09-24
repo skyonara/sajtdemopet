@@ -3,207 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Uređivanje Naslovnice / Live Editor</title>
+    <title>Glavni Admin Dashboard</title>
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; display: flex; height: 100vh; background: #f4f4f4; color: #111; }
+        
+        /* Sidebar Navigation */
+        aside { width: 260px; background: #111; color: #fff; padding: 30px 20px; display: flex; flex-direction: column; justify-content: space-between; }
+        aside h2 { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 30px; opacity: 0.7; }
+        .nav-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+        .nav-links button { background: none; border: none; color: #aaa; text-align: left; font-size: 0.9rem; padding: 10px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: color 0.2s, background 0.2s; font-family: inherit; width: 100%; }
+        .nav-links button:hover, .nav-links button.active { color: #fff; background: rgba(255,255,255,0.08); }
+        
+        .admin-actions { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; display: flex; flex-direction: column; gap: 10px; }
+        .admin-actions a { color: #aaa; text-decoration: none; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; }
+        .admin-actions a:hover { color: #fff; }
 
-        body {
-            background-color: #f4f4f4;
-            color: #000;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            display: flex;
-            height: 100vh;
-            overflow: hidden;
-        }
-
-        /* Sidebar */
-        aside {
-            width: 260px;
-            background-color: #fff;
-            border-right: 1px solid #ddd;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 30px 20px;
-        }
-
-        .logo-area h2 {
-            font-size: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 30px;
-            font-weight: 700;
-        }
-
-        .nav-links {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: #000;
-            font-size: 0.9rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .back-link {
-            font-size: 0.8rem;
-            color: #666;
-            text-decoration: underline;
-        }
-
-        /* Main Area */
-        main {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            overflow-y: auto;
-            background-color: #fafafa;
-        }
-
-        header {
-            background-color: #fff;
-            padding: 20px 40px;
-            border-bottom: 1px solid #ddd;
-        }
-
-        header h1 {
-            font-size: 1.2rem;
-            text-transform: uppercase;
-            letter-spacing: -0.5px;
-        }
-
-        .editor-container {
-            padding: 40px;
-            max-width: 700px;
-        }
-
-        .card {
-            background: #fff;
-            border: 1px solid #e0e0e0;
-            padding: 30px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        label {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            color: #333;
-        }
-
-        textarea {
-            width: 100%;
-            height: 120px;
-            padding: 12px;
-            font-family: inherit;
-            font-size: 1rem;
-            border: 1px solid #ccc;
-            resize: vertical;
-        }
-
-        .btn {
-            background: #000;
-            color: #fff;
-            border: none;
-            padding: 12px 20px;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            cursor: pointer;
-            font-weight: 600;
-            align-self: flex-start;
-        }
-
-        .btn:hover {
-            background: #333;
-        }
-
-        .success-msg {
-            font-size: 0.85rem;
-            color: green;
-            display: none;
-            margin-top: 10px;
-        }
+        /* Main Editing Area */
+        main { flex: 1; padding: 50px; overflow-y: auto; background: #fff; }
+        .panel { display: none; max-width: 800px; }
+        .panel.active { display: block; }
+        
+        h1 { font-size: 1.5rem; text-transform: uppercase; letter-spacing: -0.5px; margin-bottom: 25px; border-bottom: 1px solid #eee; padding-bottom: 15px; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; font-weight: 600; margin-bottom: 6px; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 1px; color: #555; }
+        input[type="text"], textarea { width: 100%; padding: 12px; border: 1px solid #ddd; font-family: inherit; font-size: 0.95rem; }
+        textarea { height: 160px; line-height: 1.5; }
+        
+        .save-btn { background: #000; color: #fff; border: none; padding: 12px 24px; cursor: pointer; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1.5px; }
+        .save-btn:hover { background: #333; }
+        .success-msg { color: #2e7d32; font-size: 0.85rem; margin-left: 15px; opacity: 0; transition: opacity 0.3s; }
+        .success-msg.show { opacity: 1; }
     </style>
 </head>
 <body>
 
-    <!-- Sidebar -->
+    <!-- Sidebar Navigation Hub -->
     <aside>
         <div>
-            <div class="logo-area">
-                <h2>Live Editor</h2>
-            </div>
+            <h2>Admin Hub</h2>
             <ul class="nav-links">
-                <li><a href="#">Uredi Naslovnicu</a></li>
+                <li><button class="tab-btn active" data-target="frontpage-panel">Naslovnica (Index)</button></li>
+                <li><button class="tab-btn" data-target="book-panel">Usta puna mora (Knjiga)</button></li>
+                <!-- Add more pages here as your site grows -->
             </ul>
         </div>
-        <div>
-            <a href="index.html" class="back-link">← Natrag na web stranicu</a>
+        <div class="admin-actions">
+            <a href="index.html" target="_blank">Pogledaj live stranicu ↗</a>
         </div>
     </aside>
 
-    <!-- Main Content -->
+    <!-- Editing Panels -->
     <main>
-        <header>
-            <h1>Brzo Uređivanje Teksta</h1>
-        </header>
-
-        <div class="editor-container">
-            <div class="card">
+        <!-- 1. Frontpage Edit Panel -->
+        <section id="frontpage-panel" class="panel active">
+            <h1>Uređivanje: Naslovnica</h1>
+            <form id="form-frontpage" data-storage="site_data_frontpage">
                 <div class="form-group">
-                    <label for="titleInput">Glavni Naslov (Ime i prezime):</label>
-                    <textarea id="titleInput" placeholder="Jurica&#10;Pavičić"></textarea>
-                    <span style="font-size: 0.75rem; color: #666;">Koristite novi red (Enter) za prelazak u novi red kao na naslovnici.</span>
+                    <label>Glavni naslov / Ime autora</label>
+                    <input type="text" name="heroTitle" value="Jurica Pavičić">
                 </div>
+                <div class="form-group">
+                    <label>Kratka biografija / Uvodni tekst</label>
+                    <textarea name="bioText">Pisac, scenarist i filmski kritičar...</textarea>
+                </div>
+                <button type="submit" class="save-btn">Spremi promjene</button>
+                <span class="success-msg">Spremljeno!</span>
+            </form>
+        </section>
 
-                <button class="btn" id="saveBtn">Spremi promjene</button>
-                <div class="success-msg" id="successMsg">Promjene su uspješno spremljene!</div>
-            </div>
-        </div>
+        <!-- 2. Book Page Edit Panel -->
+        <section id="book-panel" class="panel">
+            <h1>Uređivanje: Usta puna mora</h1>
+            <form id="form-book" data-storage="book_data_usta_puna_mora">
+                <div class="form-group">
+                    <label>Naslov knjige</label>
+                    <input type="text" name="bookTitle" value="Usta puna mora">
+                </div>
+                <div class="form-group">
+                    <label>Podnaslov</label>
+                    <input type="text" name="bookSubtitle" value="Roman">
+                </div>
+                <div class="form-group">
+                    <label>Godina</label>
+                    <input type="text" name="bookYear" value="2024.">
+                </div>
+                <div class="form-group">
+                    <label>Glavni sadržaj (O knjizi)</label>
+                    <textarea name="bookBodyContent">&lt;h2&gt;O knjizi&lt;/h2&gt;&lt;p&gt;lorem ipsum...&lt;/p&gt;</textarea>
+                </div>
+                <button type="submit" class="save-btn">Spremi promjene</button>
+                <span class="success-msg">Spremljeno!</span>
+            </form>
+        </section>
     </main>
 
     <script>
-        const titleInput = document.getElementById('titleInput');
-        const saveBtn = document.getElementById('saveBtn');
-        const successMsg = document.getElementById('successMsg');
+        // --- Tab Switching Logic ---
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const panels = document.querySelectorAll('.panel');
 
-        window.addEventListener('DOMContentLoaded', () => {
-            const saved = localStorage.getItem('jurica_site_title');
-            if (saved) {
-                titleInput.value = saved;
-            } else {
-                titleInput.value = "Jurica\nPavičić";
-            }
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                tabBtns.forEach(b => b.classList.remove('active'));
+                panels.forEach(p => p.classList.remove('active'));
+
+                btn.classList.add('active');
+                document.getElementById(btn.getAttribute('data-target')).classList.add('active');
+            });
         });
 
-        saveBtn.addEventListener('click', () => {
-            localStorage.setItem('jurica_site_title', titleInput.value);
-            successMsg.style.display = 'block';
-            setTimeout(() => {
-                successMsg.style.display = 'none';
-            }, 3000);
+        // --- Load & Save Logic for All Forms ---
+        const forms = document.querySelectorAll('form[data-storage]');
+
+        forms.forEach(form => {
+            const storageKey = form.getAttribute('data-storage');
+            const successMsg = form.querySelector('.success-msg');
+
+            // 1. Load saved data on startup
+            const savedData = JSON.parse(localStorage.getItem(storageKey));
+            if (savedData) {
+                for (const [key, value] of Object.entries(savedData)) {
+                    if (form.elements[key]) {
+                        form.elements[key].value = value;
+                    }
+                }
+            }
+
+            // 2. Save data on submit
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const formData = new FormData(form);
+                const dataObject = {};
+
+                formData.forEach((value, key) => {
+                    dataObject[key] = value;
+                });
+
+                localStorage.setItem(storageKey, JSON.stringify(dataObject));
+
+                // Show success feedback
+                successMsg.classList.add('show');
+                setTimeout(() => {
+                    successMsg.classList.remove('show');
+                }, 2500);
+            });
         });
     </script>
-
 </body>
 </html>
