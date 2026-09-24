@@ -132,7 +132,46 @@
             </section>
         </main>
     </div>
-
+<!-- Book Page Panel inside dashboard.html -->
+<section id="book-panel" class="panel">
+    <h1>Uređivanje: Usta puna mora</h1>
+    <form id="form-book" data-storage="book_data_usta_puna_mora">
+        <div class="form-group">
+            <label>Naslov knjige</label>
+            <input type="text" name="bookTitle" value="Usta puna mora">
+        </div>
+        <div class="form-group">
+            <label>Podnaslov / Vrsta</label>
+            <input type="text" name="bookSubtitle" value="Roman">
+        </div>
+        <div class="form-group">
+            <label>Godina</label>
+            <input type="text" name="bookYear" value="2024.">
+        </div>
+        <div class="form-group">
+            <label>Izdavač</label>
+            <input type="text" name="bookPublisher" value="">
+        </div>
+        <div class="form-group">
+            <label>Info</label>
+            <input type="text" name="bookInfo" value="">
+        </div>
+        <div class="form-group">
+            <label>ISBN</label>
+            <input type="text" name="bookIsbn" value="1234...">
+        </div>
+        <div class="form-group">
+            <label>URL slike korica</label>
+            <input type="text" name="bookImageSrc" value="https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=800&auto=format&fit=crop">
+        </div>
+        <div class="form-group">
+            <label>Glavni tekst / Sadržaj (HTML dozvoljen)</label>
+            <textarea name="bookBodyContent" style="height: 200px; font-family: inherit;">&lt;h2&gt;O knjizi&lt;/h2&gt;&lt;p&gt;lorem ipsum...&lt;/p&gt;</textarea>
+        </div>
+        <button type="submit" class="save-btn">Spremi promjene</button>
+        <span class="success-msg">Spremljeno!</span>
+    </form>
+</section>
     <script>
         const CORRECT_PASSWORD = 'tvoja_lozinka'; 
         const sessionKey = 'admin_logged_in_auth';
