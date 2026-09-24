@@ -26,7 +26,6 @@
             to { opacity: 1; }
         }
 
-        /* Subtle architectural border frame */
         body::after {
             content: '';
             position: fixed;
@@ -39,7 +38,6 @@
             z-index: 9999;
         }
 
-        /* Top Bar: Back Button & Menu Toggle */
         .top-bar {
             position: fixed;
             top: 0;
@@ -70,7 +68,6 @@
             opacity: 1;
         }
 
-        /* Menu Button Top Right */
         .menu-btn {
             background: transparent;
             border: none;
@@ -108,7 +105,6 @@
             color: #000;
         }
 
-        /* Main Content Layout - Ultra-wide widescreen container */
         .content-container {
             max-width: 1550px;
             margin: 0 auto;
@@ -117,7 +113,7 @@
 
         .book-header {
             display: grid;
-            grid-template-columns: 560px 1fr; /* Massive image column width */
+            grid-template-columns: 560px 1fr;
             gap: 90px;
             align-items: start;
             margin-bottom: 80px;
@@ -169,12 +165,11 @@
             color: #000;
         }
 
-        /* Detailed Description Sections */
         .book-body {
             font-size: 1.1rem;
             line-height: 1.8;
             color: #222;
-            max-width: 1100px; /* Expands reading width to match the ultra-wide layout */
+            max-width: 1100px;
         }
 
         .book-body h2 {
@@ -190,7 +185,6 @@
             margin-bottom: 26px;
         }
 
-        /* Fullscreen Menu Overlay */
         .menu-overlay {
             position: fixed;
             top: 0;
@@ -340,7 +334,7 @@
             <li class="has-submenu" id="submenuParent">
                 <button class="submenu-toggle" id="submenuToggle" type="button">Knjige / Proza</button>
                 <ul class="submenu">
-                    <li><a href="index.html#novels" class="menu-link">Romani</a></li>
+                    <li><a href="stranica1.html" class="menu-link">Romani</a></li>
                     <li><a href="#stories" class="menu-link">Zbirke priča</a></li>
                     <li><a href="#essays" class="menu-link">Eseji / Publicistika</a></li>
                 </ul>
@@ -354,11 +348,11 @@
     <main class="content-container">
         <div class="book-header">
             <div class="book-cover">
-                <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=800&auto=format&fit=crop" alt="Usta puna mora">
+                <img id="bookImage" src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=800&auto=format&fit=crop" alt="Usta puna mora">
             </div>
             <div class="book-meta-info">
-                <h1>Usta puna mora</h1>
-                <div class="book-subtitle">Roman</div>
+                <h1 id="bookTitle">Usta puna mora</h1>
+                <div class="book-subtitle" id="bookSubtitle">Roman</div>
                 <div class="book-details-grid">
                     <span><strong>Godina:</strong> 2024.</span>
                     <span><strong>Izdavač:</strong> </span>
@@ -368,7 +362,7 @@
             </div>
         </div>
 
-        <div class="book-body">
+        <div class="book-body" id="bookBodyContent">
             <h2>O knjizi</h2>
             <p>lorem ipsum...</p>
             <p>dolor sit amet...</p>
@@ -380,6 +374,23 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // Load saved edits from dashboard storage
+            const savedBookData = JSON.parse(localStorage.getItem('book_data_usta_puna_mora'));
+            if (savedBookData) {
+                const bookTitle = document.getElementById('bookTitle');
+                if (bookTitle && savedBookData.bookTitle) bookTitle.innerText = savedBookData.bookTitle;
+
+                const bookSubtitle = document.getElementById('bookSubtitle');
+                if (bookSubtitle && savedBookData.bookSubtitle) bookSubtitle.innerText = savedBookData.bookSubtitle;
+
+                const bookImage = document.getElementById('bookImage');
+                if (bookImage && savedBookData.bookImageSrc) bookImage.src = savedBookData.bookImageSrc;
+
+                const bookBodyContent = document.getElementById('bookBodyContent');
+                if (bookBodyContent && savedBookData.bookBodyContent) bookBodyContent.innerHTML = savedBookData.bookBodyContent;
+            }
+
+            // Menu interactions
             const menuToggle = document.getElementById('menuToggle');
             const menuOverlay = document.getElementById('menuOverlay');
             const menuLabel = document.getElementById('menuLabel');
