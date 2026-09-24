@@ -10,33 +10,17 @@
         
         /* --- Login Overlay Screen --- */
         #loginOverlay {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background: #fff;
-            z-index: 99999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: #fff; z-index: 99999; display: flex; justify-content: center; align-items: center;
         }
-        .login-box {
-            width: 100%; max-width: 360px;
-            padding: 40px;
-            text-align: center;
-        }
+        .login-box { width: 100%; max-width: 360px; padding: 40px; text-align: center; }
         .login-box h2 { font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 24px; }
-        .login-box input {
-            width: 100%; padding: 12px; border: 1px solid #ddd;
-            margin-bottom: 15px; font-family: inherit; font-size: 0.95rem; text-align: center;
-        }
-        .login-box button {
-            width: 100%; background: #000; color: #fff; border: none;
-            padding: 12px; cursor: pointer; text-transform: uppercase;
-            font-size: 0.75rem; letter-spacing: 1.5px;
-        }
+        .login-box input { width: 100%; padding: 12px; border: 1px solid #ddd; margin-bottom: 15px; font-family: inherit; font-size: 0.95rem; text-align: center; }
+        .login-box button { width: 100%; background: #000; color: #fff; border: none; padding: 12px; cursor: pointer; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1.5px; }
         .login-box button:hover { background: #333; }
         .login-error { color: #b22222; font-size: 0.8rem; margin-top: 10px; display: none; }
 
-        /* --- Dashboard Layout (Hidden until logged in) --- */
+        /* --- Dashboard Layout --- */
         #dashboardContainer { display: none; width: 100%; height: 100%; }
         aside { width: 260px; background: #111; color: #fff; padding: 30px 20px; display: flex; flex-direction: column; justify-content: space-between; }
         aside h2 { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 30px; opacity: 0.7; }
@@ -56,7 +40,7 @@
         .form-group { margin-bottom: 20px; }
         label { display: block; font-weight: 600; margin-bottom: 6px; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 1px; color: #555; }
         input[type="text"], textarea { width: 100%; padding: 12px; border: 1px solid #ddd; font-family: inherit; font-size: 0.95rem; }
-        textarea { height: 160px; line-height: 1.5; }
+        textarea { height: 120px; line-height: 1.5; font-family: monospace; }
         
         .save-btn { background: #000; color: #fff; border: none; padding: 12px 24px; cursor: pointer; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1.5px; }
         .save-btn:hover { background: #333; }
@@ -78,43 +62,41 @@
         </div>
     </div>
 
-    <!-- Main Dashboard Container (Protected) -->
+    <!-- Main Dashboard Container -->
     <div id="dashboardContainer">
-        <!-- Sidebar Navigation Hub -->
         <aside>
             <div>
                 <h2>Admin Hub</h2>
                 <ul class="nav-links">
-                    <li><button class="tab-btn active" data-target="frontpage-panel">Naslovnica (Index)</button></li>
+                    <li><button class="tab-btn active" data-target="index-panel">Naslovnica (Index)</button></li>
                     <li><button class="tab-btn" data-target="book-panel">Usta puna mora (Knjiga)</button></li>
                 </ul>
             </div>
             <div class="admin-actions">
-                <a href="index.html" target="_blank">Pogledaj live stranicu ↗</a>
+                <a href="index.html" target="_blank">Pogledaj naslovnicu ↗</a>
                 <button id="logoutBtn" type="button">Odjava</button>
             </div>
         </aside>
 
-        <!-- Editing Panels -->
         <main>
-            <!-- 1. Frontpage Edit Panel -->
-            <section id="frontpage-panel" class="panel active">
+            <!-- 1. Index Page Panel (Matches your exact template elements) -->
+            <section id="index-panel" class="panel active">
                 <h1>Uređivanje: Naslovnica</h1>
-                <form id="form-frontpage" data-storage="site_data_frontpage">
+                <form id="form-index" data-storage="site_data_index">
                     <div class="form-group">
-                        <label>Glavni naslov / Ime autora</label>
-                        <input type="text" name="heroTitle" value="Jurica Pavičić">
+                        <label>Glavni naslov (HTML dozvoljen za prijelome redaka, npr. &lt;br&gt;)</label>
+                        <textarea name="siteTitle">Jurica&lt;br&gt;Pavičić</textarea>
                     </div>
                     <div class="form-group">
-                        <label>Kratka biografija / Uvodni tekst</label>
-                        <textarea name="bioText">Pisac, scenarist i filmski kritičar...</textarea>
+                        <label>URL slike na naslovnici (Desna strana)</label>
+                        <input type="text" name="heroImageSrc" value="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1000&auto=format&fit=crop">
                     </div>
                     <button type="submit" class="save-btn">Spremi promjene</button>
                     <span class="success-msg">Spremljeno!</span>
                 </form>
             </section>
 
-            <!-- 2. Book Page Edit Panel -->
+            <!-- 2. Book Page Panel -->
             <section id="book-panel" class="panel">
                 <h1>Uređivanje: Usta puna mora</h1>
                 <form id="form-book" data-storage="book_data_usta_puna_mora">
@@ -123,16 +105,12 @@
                         <input type="text" name="bookTitle" value="Usta puna mora">
                     </div>
                     <div class="form-group">
-                        <label>Podnaslov</label>
+                        <label>Podnaslov / Vrsta</label>
                         <input type="text" name="bookSubtitle" value="Roman">
                     </div>
                     <div class="form-group">
                         <label>Godina</label>
                         <input type="text" name="bookYear" value="2024.">
-                    </div>
-                    <div class="form-group">
-                        <label>Glavni sadržaj (O knjizi)</label>
-                        <textarea name="bookBodyContent">&lt;h2&gt;O knjizi&lt;/h2&gt;&lt;p&gt;lorem ipsum...&lt;/p&gt;</textarea>
                     </div>
                     <button type="submit" class="save-btn">Spremi promjene</button>
                     <span class="success-msg">Spremljeno!</span>
@@ -142,9 +120,7 @@
     </div>
 
     <script>
-        // --- Password Security Settings ---
-        // Change 'tvoja_lozinka' to whatever secure password you prefer!
-        const CORRECT_PASSWORD = 'marija123'; 
+        const CORRECT_PASSWORD = 'tvoja_lozinka'; // Promijenite lozinku po želji
         const sessionKey = 'admin_logged_in_auth';
 
         const loginOverlay = document.getElementById('loginOverlay');
@@ -154,7 +130,6 @@
         const loginError = document.getElementById('loginError');
         const logoutBtn = document.getElementById('logoutBtn');
 
-        // Check if already logged in during this browser session
         if (sessionStorage.getItem(sessionKey) === 'true') {
             unlockDashboard();
         }
@@ -182,7 +157,7 @@
             dashboardContainer.style.display = 'flex';
         }
 
-        // --- Tab Switching Logic ---
+        // Tab Switching
         const tabBtns = document.querySelectorAll('.tab-btn');
         const panels = document.querySelectorAll('.panel');
 
@@ -196,7 +171,7 @@
             });
         });
 
-        // --- Load & Save Logic for All Forms ---
+        // Form Load/Save via localStorage
         const forms = document.querySelectorAll('form[data-storage]');
 
         forms.forEach(form => {
@@ -224,9 +199,7 @@
                 localStorage.setItem(storageKey, JSON.stringify(dataObject));
 
                 successMsg.classList.add('show');
-                setTimeout(() => {
-                    successMsg.classList.remove('show');
-                }, 2500);
+                setTimeout(() => { successMsg.classList.remove('show'); }, 2500);
             });
         });
     </script>
