@@ -28,3 +28,12 @@ collections:
           - {label: "ISBN", name: "bookIsbn", widget: "string"}
           - {label: "Slika knjige", name: "bookImageSrc", widget: "image"}
           - {label: "Sadržaj / Opis", name: "bookBodyContent", widget: "markdown"}
+- file: "content/biografija.json"
+        label: "Biografija"
+        name: "biografija"
+        fields:
+          - {label: "Ime i prezime", name: "name", widget: "string"}
+          - {label: "Podnaslov", name: "subtitle", widget: "string"}
+          - {label: "Portret slika", name: "portrait", widget: "image"}
+          - {label: "Uvodni tekst", name: "introText", widget: "text"}
+          - {label: "Glavni tekst / Sadržaj", name: "bodyContent", widget: "markdown"}
