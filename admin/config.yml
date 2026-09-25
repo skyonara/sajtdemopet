@@ -1,38 +1,30 @@
 backend:
-  name: github
-  repo: your-github-username/your-repo-name # Replace with your GitHub repo
+  name: git-gateway
   branch: main
 
-media_folder: "images/uploads"
-public_folder: "/images/uploads"
+media_folder: "images"
+public_folder: "/images"
 
 collections:
   - name: "pages"
-  - label: "Stranice Web Stranice"
-  - files:
+    label: "Stranice"
+    files:
       - file: "content/index.json"
-        label: "Naslovnica"
-        name: "index_page"
+        label: "Naslovnica (Index)"
+        name: "index"
         fields:
-          - {label: "Glavni naslov (HTML npr. Jurica<br>Pavičić)", name: "siteTitle", widget: "string"}
-          - {label: "URL slike na naslovnici", name: "heroImageSrc", widget: "image"}
-
-      - file: "content/romani.json"
-        label: "Romani (Stranica 1)"
-        name: "romani_page"
-        fields:
-          - {label: "Naslov stranice", name: "pageTitle", widget: "string"}
-          - {label: "Sadržaj / Opis", name: "pageContent", widget: "markdown"}
+          - {label: "Glavni naslov", name: "siteTitle", widget: "string"}
+          - {label: "Hero slika", name: "heroImageSrc", widget: "image"}
 
       - file: "content/book.json"
-        label: "Knjiga: Usta puna mora"
-        name: "book_page"
+        label: "Usta puna mora"
+        name: "book"
         fields:
           - {label: "Naslov knjige", name: "bookTitle", widget: "string"}
-          - {label: "Podnaslov / Vrsta", name: "bookSubtitle", widget: "string"}
+          - {label: "Podnaslov", name: "bookSubtitle", widget: "string"}
           - {label: "Godina", name: "bookYear", widget: "string"}
           - {label: "Izdavač", name: "bookPublisher", widget: "string", required: false}
           - {label: "Info", name: "bookInfo", widget: "string", required: false}
           - {label: "ISBN", name: "bookIsbn", widget: "string"}
-          - {label: "Slika korica", name: "bookImageSrc", widget: "image"}
-          - {label: "Glavni tekst / Sadržaj", name: "bookBodyContent", widget: "markdown"}
+          - {label: "Slika knjige", name: "bookImageSrc", widget: "image"}
+          - {label: "Sadržaj / Opis", name: "bookBodyContent", widget: "markdown"}
