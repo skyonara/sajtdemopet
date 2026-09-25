@@ -464,5 +464,13 @@
             });
         });
     </script>
+    <script>
+    window.addEventListener('DOMContentLoaded', () => {
+        const targetElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, a, div, .bio-body, .content-container');
+        targetElements.forEach(el => {
+            el.style.setProperty('font-family', "'Cormorant Garamond', serif", 'important');
+        });
+    });
+</script>
 </body>
 </html>
