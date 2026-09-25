@@ -1,0 +1,10 @@
+{
+  "bookTitle": "Temeljenje kuće",
+  "bookSubtitle": "Roman",
+  "bookYear": "2020.",
+  "bookPublisher": "Naziv izdavača",
+  "bookInfo": "Dodatne informacije o izdanju",
+  "bookIsbn": "978-953-000-000-0",
+  "bookImageSrc": "https://i.imgur.com/h8Yv6Jp.jpeg",
+  "bookBodyContent": "<p>Ovdje unesite glavni opis ili recenziju romana...</p><p>Možete dodavati i podnaslove koristeći <h2>Naslov</h2> oznake.</p>"
+}
