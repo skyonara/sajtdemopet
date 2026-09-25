@@ -2,9 +2,9 @@
   "bookTitle": "Temeljenje kuće",
   "bookSubtitle": "Roman",
   "bookYear": "2020.",
-  "bookPublisher": "Ime izdavačke kuće",
-  "bookInfo": "Broj stranica, uvez ili slične napomene",
-  "bookIsbn": "978-953-XXXX-XXX-X",
+  "bookPublisher": "Ime izdavača",
+  "bookInfo": "Info o knjizi",
+  "bookIsbn": "978-...",
   "bookImageSrc": "https://i.imgur.com/h8Yv6Jp.jpeg",
-  "bookBodyContent": "<p>Ovdje pišete glavni opis, radnju ili recenziju romana 'Temeljenje kuće'. Možete dodati koliko god hoćete paragrafa.</p><h2>O knjizi</h2><p>Još jedan dio teksta...</p>"
+  "bookBodyContent": "<p>Glavni tekst...</p>"
 }
