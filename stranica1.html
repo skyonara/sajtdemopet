@@ -144,6 +144,38 @@
             color: #666;
         }
 
+        /* Submenu styling for Romani / Subitems */
+        .has-submenu {
+            cursor: pointer;
+        }
+
+        .submenu {
+            list-style: none;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            text-align: right;
+            margin-top: 4px;
+        }
+
+        .has-submenu.open .submenu {
+            max-height: 150px;
+        }
+
+        .submenu li {
+            margin-top: 6px;
+        }
+
+        .submenu a {
+            font-size: 1.05rem;
+            font-weight: normal;
+            color: #555;
+        }
+
+        .submenu a:hover {
+            color: #000;
+        }
+
         /* Book Layout Container */
         .book-container {
             max-width: 1000px;
@@ -251,7 +283,12 @@
             <div class="menu-dropdown" id="menuDropdown">
                 <ul class="menu-nav">
                     <li><a href="index.html" class="menu-link">Naslovnica</a></li>
-                    <li><a href="stranica1.html" class="menu-link">Usta puna mora</a></li>
+                    <li class="has-submenu" id="submenuToggle">
+                        <a href="javascript:void(0);">Romani</a>
+                        <ul class="submenu">
+                            <li><a href="stranica1.html" class="menu-link">Usta puna mora</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -316,6 +353,7 @@
             const menuDropdown = document.getElementById('menuDropdown');
             const menuLabel = document.getElementById('menuLabel');
             const menuLinks = document.querySelectorAll('.menu-link');
+            const submenuParent = document.getElementById('submenuToggle');
 
             if (!menuToggle || !menuDropdown) return;
 
@@ -328,11 +366,20 @@
                 }
             });
 
+            // Toggle "Romani" accordion submenu
+            if (submenuParent) {
+                submenuParent.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    submenuParent.classList.toggle('open');
+                });
+            }
+
             // Close dropdown when clicking outside
             document.addEventListener('click', (e) => {
                 if (!menuToggle.contains(e.target) && !menuDropdown.contains(e.target)) {
                     document.body.classList.remove('menu-open');
                     menuDropdown.classList.remove('active');
+                    if (submenuParent) submenuParent.classList.remove('open');
                     if (menuLabel) {
                         menuLabel.innerText = 'meni';
                     }
@@ -343,6 +390,7 @@
                 link.addEventListener('click', () => {
                     document.body.classList.remove('menu-open');
                     menuDropdown.classList.remove('active');
+                    if (submenuParent) submenuParent.classList.remove('open');
                     if (menuLabel) {
                         menuLabel.innerText = 'meni';
                     }
