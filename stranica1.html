@@ -297,6 +297,7 @@
     <!-- Book Content Layout -->
     <main class="book-container">
         <div class="book-image-col">
+            <img id="bookImage" src="https://i.imgur.com/h8Yv6Jp.jpeg" alt="Naslovnica knjige">
         </div>
         <div class="book-info-col">
             <h1 id="bookTitle">Usta puna mora</h1>
@@ -340,7 +341,12 @@
                     }
 
                     if (data.bookIsbn) document.getElementById('bookIsbn').innerText = data.bookIsbn;
-                    if (data.bookImageSrc) document.getElementById('bookImage').src = data.bookImageSrc;
+                    
+                    // Only override image if bookImageSrc is defined and not empty in JSON
+                    if (data.bookImageSrc && data.bookImageSrc.trim() !== '') {
+                        document.getElementById('bookImage').src = data.bookImageSrc;
+                    }
+
                     if (data.bookBodyContent) document.getElementById('bookBodyContent').innerHTML = data.bookBodyContent;
                 }
             } catch (e) {
