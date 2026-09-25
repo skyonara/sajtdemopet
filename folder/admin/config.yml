@@ -1,0 +1,30 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "images"
+public_folder: "/images"
+
+collections:
+  - name: "pages"
+    label: "Stranice"
+    files:
+      - file: "content/index.json"
+        label: "Naslovnica (Index)"
+        name: "index"
+        fields:
+          - {label: "Glavni naslov", name: "siteTitle", widget: "string"}
+          - {label: "Hero slika", name: "heroImageSrc", widget: "image"}
+
+      - file: "content/book.json"
+        label: "Usta puna mora"
+        name: "book"
+        fields:
+          - {label: "Naslov knjige", name: "bookTitle", widget: "string"}
+          - {label: "Podnaslov", name: "bookSubtitle", widget: "string"}
+          - {label: "Godina", name: "bookYear", widget: "string"}
+          - {label: "Izdavač", name: "bookPublisher", widget: "string", required: false}
+          - {label: "Info", name: "bookInfo", widget: "string", required: false}
+          - {label: "ISBN", name: "bookIsbn", widget: "string"}
+          - {label: "Slika knjige", name: "bookImageSrc", widget: "image"}
+          - {label: "Sadržaj / Opis", name: "bookBodyContent", widget: "markdown"}
