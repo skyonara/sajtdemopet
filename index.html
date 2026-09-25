@@ -4,6 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jurica Pavičić</title>
+    
+    <!-- EMERGENCY FONT TEST OVERRIDE -->
+    <style>
+        h1, h2, h3, .bio-title-area h1, .bio-subtitle {
+            font-family: "Courier New", Courier, monospace !important;
+            letter-spacing: 2px !important;
+        }
+    </style>
+
     <!-- Google Fonts: Cormorant Garamond -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,7 +29,6 @@
             width: 100%;
             background-color: #f7f4ef;
             color: #2b2621;
-            /* Fallback stack, but headings will force Cormorant Garamond */
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             overflow-x: hidden;
             opacity: 0;
@@ -158,14 +166,6 @@
             filter: grayscale(80%) contrast(105%);
         }
 
-        /* FORCED Cormorant Garamond Typography */
-        h1, h2, h3, h4, h5, h6, 
-        .bio-title-area h1, 
-        .bio-subtitle, 
-        .bio-body h2 {
-            font-family: 'Cormorant Garamond', serif !important;
-        }
-
         .bio-title-area h1 {
             font-size: clamp(3rem, 5vw, 4.8rem);
             font-weight: 700;
@@ -244,7 +244,6 @@
         }
 
         .menu-nav a, .submenu-toggle {
-            font-family: 'Cormorant Garamond', serif !important;
             font-size: clamp(2rem, 4vw, 3.2rem);
             text-decoration: none;
             color: #f7f4ef;
