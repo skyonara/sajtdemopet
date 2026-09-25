@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Marija Andrijašević</title>
+    <title>Jurica Pavičić</title>
     
     <!-- Google Fonts: Cormorant Garamond -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,30 +11,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
     
     <style>
-        <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        /* CHANGE THIS: Set Cormorant Garamond as your global body font, or strip Segoe UI */
-        body, html {
-            height: 100%;
-            width: 100%;
-            background-color: #f7f4ef;
-            color: #2b2621;
-            font-family: 'Cormorant Garamond', serif !important;
-            overflow-x: hidden;
-            opacity: 0;
-            animation: fadeIn 0.5s ease-in-out forwards;
-        }
-
-        /* Ensure paragraphs and dynamic CMS blocks also pull the serif font */
-        p, span, a, li, input, button, 
-        .bio-body, .content-container {
-            font-family: 'Cormorant Garamond', serif !important;
-        }
         * {
             box-sizing: border-box;
             margin: 0;
@@ -46,6 +22,7 @@
             width: 100%;
             background-color: #f7f4ef;
             color: #2b2621;
+            font-family: 'Cormorant Garamond', serif;
             overflow-x: hidden;
             opacity: 0;
             animation: fadeIn 0.5s ease-in-out forwards;
@@ -83,7 +60,7 @@
         }
 
         .back-link {
-            font-size: 0.7rem;
+            font-size: 0.8rem;
             text-transform: uppercase;
             letter-spacing: 1.5px;
             color: #c17254;
@@ -132,7 +109,7 @@
         }
 
         .menu-text {
-            font-size: 0.6rem;
+            font-size: 0.7rem;
             text-transform: uppercase;
             letter-spacing: 1.5px;
             margin-top: 6px;
@@ -182,17 +159,6 @@
             filter: grayscale(80%) contrast(105%);
         }
 
-        /* FORCE Cormorant Garamond on CMS-injected elements and headings */
-        #bioName, 
-        #bioSubtitle, 
-        .bio-title-area h1, 
-        .bio-subtitle, 
-        .bio-body h2,
-        .menu-nav a, 
-        .submenu-toggle {
-            font-family: 'Cormorant Garamond', serif !important;
-        }
-
         .bio-title-area h1 {
             font-size: clamp(3rem, 5vw, 4.8rem);
             font-weight: 700;
@@ -213,7 +179,7 @@
         }
 
         .bio-body {
-            font-size: 1.15rem;
+            font-size: 1.2rem;
             line-height: 1.85;
             color: #443c36;
             max-width: 1100px;
@@ -399,16 +365,16 @@
         </ul>
     </div>
 
-    <!-- Main Content Area (Dynamic CMS Bindings) -->
+    <!-- Main Content Area -->
     <main class="content-container">
         <div class="bio-header">
             <div class="bio-portrait">
-                <img id="bioPortraitImg" src="" alt="Marija Andrijašević">
+                <img id="bioPortraitImg" src="" alt="Jurica Pavičić">
             </div>
             <div class="bio-title-area">
                 <h1 id="bioName"></h1>
                 <div class="bio-subtitle" id="bioSubtitle"></div>
-                <p id="bioIntroText" style="color: #5a5047; line-height: 1.7; font-size: 1.1rem;"></p>
+                <p id="bioIntroText" style="color: #5a5047; line-height: 1.7; font-size: 1.15rem;"></p>
             </div>
         </div>
 
@@ -464,13 +430,5 @@
             });
         });
     </script>
-    <script>
-    window.addEventListener('DOMContentLoaded', () => {
-        const targetElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, a, div, .bio-body, .content-container');
-        targetElements.forEach(el => {
-            el.style.setProperty('font-family', "'Cormorant Garamond', serif", 'important');
-        });
-    });
-</script>
 </body>
 </html>
