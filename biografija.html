@@ -14,8 +14,8 @@
         body, html {
             height: 100%;
             width: 100%;
-            background-color: #f7f4ef; /* Warm cream background */
-            color: #2b2621; /* Deep espresso text */
+            background-color: #f7f4ef;
+            color: #2b2621;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             overflow-x: hidden;
             opacity: 0;
@@ -26,7 +26,6 @@
             to { opacity: 1; }
         }
 
-        /* Subtle architectural border frame with color tint */
         body::after {
             content: '';
             position: fixed;
@@ -34,12 +33,11 @@
             left: 15px;
             right: 15px;
             bottom: 15px;
-            border: 1px solid rgba(193, 114, 84, 0.2); /* Terracotta accent border */
+            border: 1px solid rgba(193, 114, 84, 0.2);
             pointer-events: none;
             z-index: 9999;
         }
 
-        /* Top Bar: Back Button & Menu Toggle */
         .top-bar {
             position: fixed;
             top: 0;
@@ -57,7 +55,7 @@
             font-size: 0.7rem;
             text-transform: uppercase;
             letter-spacing: 1.5px;
-            color: #c17254; /* Terracotta link */
+            color: #c17254;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
@@ -72,7 +70,6 @@
             color: #2b2621;
         }
 
-        /* Menu Button Top Right */
         .menu-btn {
             background: transparent;
             border: none;
@@ -110,7 +107,6 @@
             color: #2b2621;
         }
 
-        /* Main Content Layout - Ultra-wide widescreen container */
         .content-container {
             max-width: 1550px;
             margin: 0 auto;
@@ -133,7 +129,6 @@
             background-color: #e6dfd3;
         }
 
-        /* Stylish color tint overlay badge for portrait */
         .bio-portrait::before {
             content: '';
             position: absolute;
@@ -166,14 +161,13 @@
 
         .bio-subtitle {
             font-size: 1.25rem;
-            color: #c17254; /* Terracotta accent */
+            color: #c17254;
             margin-bottom: 32px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             font-weight: 600;
         }
 
-        /* Detailed Biography Body / Timeline */
         .bio-body {
             font-size: 1.1rem;
             line-height: 1.8;
@@ -197,14 +191,13 @@
             margin-bottom: 26px;
         }
 
-        /* Fullscreen Menu Overlay */
         .menu-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background-color: rgba(43, 38, 33, 0.97); /* Deep dark espresso backdrop */
+            background-color: rgba(43, 38, 33, 0.97);
             backdrop-filter: blur(12px);
             z-index: 99998;
             display: flex;
@@ -250,7 +243,7 @@
         }
 
         .menu-nav a:hover, .submenu-toggle:hover {
-            color: #c17254; /* Terracotta hover */
+            color: #c17254;
             letter-spacing: 0px;
         }
 
@@ -304,7 +297,7 @@
             opacity: 1;
         }
         body.menu-open .menu-line {
-            background-color: #f7f4ef; /* Switch hamburger lines to light when menu is active */
+            background-color: #f7f4ef;
         }
         body.menu-open .menu-text {
             color: #f7f4ef;
@@ -336,7 +329,6 @@
 </head>
 <body>
 
-    <!-- Top Navigation Bar -->
     <div class="top-bar">
         <a href="index.html" class="back-link">← Povratak na naslovnicu</a>
         <button class="menu-btn" id="menuToggle" type="button" aria-label="Toggle menu">
@@ -347,7 +339,6 @@
         </button>
     </div>
 
-    <!-- Fullscreen Menu Overlay -->
     <div class="menu-overlay" id="menuOverlay">
         <ul class="menu-nav">
             <li><a href="index.html#biography" class="menu-link">Biografija</a></li>
@@ -364,30 +355,38 @@
         </ul>
     </div>
 
-    <!-- Main Content Area -->
     <main class="content-container">
         <div class="bio-header">
             <div class="bio-portrait">
-                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=800&auto=format&fit=crop" alt="Jurica Pavičić">
+                <img id="bioPortraitImg" src="" alt="Jurica Pavičić">
             </div>
             <div class="bio-title-area">
-                <h1>Jurica Pavičić</h1>
-                <div class="bio-subtitle">Biografija i bibliografija</div>
-                <p style="color: #5a5047; line-height: 1.7;">Rođen 1965. u Splitu. Pisac, filmski kritičar, novinar i kulturni analitičar. Diplomirao je svjetsku književnost i komparativnu književnost na Filozofskom fakultetu u Zagrebu.</p>
+                <h1 id="bioName"></h1>
+                <div class="bio-subtitle" id="bioSubtitle"></div>
+                <p id="bioIntroText" style="color: #5a5047; line-height: 1.7;"></p>
             </div>
         </div>
 
-        <div class="bio-body">
-            <h2>Književni rad</h2>
-            <p>Autor je više hvaljenih romana, zbirki priča i knjiga filmskih i medijskih eseja. Njegova djela prevedena su na brojne europske jezike (njemački, francuski, talijanski, engleski...) te su nagrađivana prestižnim domaćim i međunarodnim književnim nagradama.</p>
-
-            <h2>Novinarstvo i kritika</h2>
-            <p>Dugogodišnji je kolumnist i filmski kritičar vodećih tiskovina i portala. Njegovi tekstovi bave se društvenim fenomenima, medijima, urbanizmom i suvremenom kulturom mediteranskog kruga.</p>
-        </div>
+        <div class="bio-body" id="bioBodyContent"></div>
     </main>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+        // Fetch content dynamically from JSON
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const response = await fetch('content/biografija.json');
+                const data = await response.json();
+
+                document.getElementById('bioName').textContent = data.name || '';
+                document.getElementById('bioSubtitle').textContent = data.subtitle || '';
+                document.getElementById('bioIntroText').textContent = data.introText || '';
+                document.getElementById('bioPortraitImg').src = data.portrait || '';
+                document.getElementById('bioBodyContent').innerHTML = data.bodyContent || '';
+            } catch (error) {
+                console.error('Error loading biography content:', error);
+            }
+
+            // Menu overlay toggle scripts
             const menuToggle = document.getElementById('menuToggle');
             const menuOverlay = document.getElementById('menuOverlay');
             const menuLabel = document.getElementById('menuLabel');
