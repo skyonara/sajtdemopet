@@ -372,68 +372,30 @@
         </div>
     </main>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Load saved edits from dashboard storage
-            const savedBookData = JSON.parse(localStorage.getItem('book_data_usta_puna_mora'));
-            if (savedBookData) {
-                const bookTitle = document.getElementById('bookTitle');
-                if (bookTitle && savedBookData.bookTitle) bookTitle.innerText = savedBookData.bookTitle;
+<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        try {
+            // Fetch the JSON file updated by Decap CMS
+            const response = await fetch('content/book.json');
+            if (!response.ok) return;
+            const data = await response.json();
 
-                const bookSubtitle = document.getElementById('bookSubtitle');
-                if (bookSubtitle && savedBookData.bookSubtitle) bookSubtitle.innerText = savedBookData.bookSubtitle;
+            // Populate elements
+            if (data.bookTitle) document.getElementById('bookTitle').innerText = data.bookTitle;
+            if (data.bookSubtitle) document.getElementById('bookSubtitle').innerText = data.bookSubtitle;
+            if (data.bookYear) document.getElementById('bookYear').innerText = data.bookYear;
+            if (data.bookPublisher) document.getElementById('bookPublisher').innerText = data.bookPublisher;
+            if (data.bookInfo) document.getElementById('bookInfo').innerText = data.bookInfo;
+            if (data.bookIsbn) document.getElementById('bookIsbn').innerText = data.bookIsbn;
+            if (data.bookImageSrc) document.getElementById('bookImageSrc').src = data.bookImageSrc;
+            
+            // If using markdown widget, you can insert it directly or via innerHTML
+            if (data.bookBodyContent) document.getElementById('bookBodyContent').innerHTML = data.bookBodyContent;
 
-                const bookImage = document.getElementById('bookImage');
-                if (bookImage && savedBookData.bookImageSrc) bookImage.src = savedBookData.bookImageSrc;
-
-                const bookYear = document.getElementById('bookYear');
-                if (bookYear && savedBookData.bookYear) bookYear.innerText = savedBookData.bookYear;
-
-                const bookPublisher = document.getElementById('bookPublisher');
-                if (bookPublisher && savedBookData.bookPublisher) bookPublisher.innerText = savedBookData.bookPublisher;
-
-                const bookInfo = document.getElementById('bookInfo');
-                if (bookInfo && savedBookData.bookInfo) bookInfo.innerText = savedBookData.bookInfo;
-
-                const bookIsbn = document.getElementById('bookIsbn');
-                if (bookIsbn && savedBookData.bookIsbn) bookIsbn.innerText = savedBookData.bookIsbn;
-
-                const bookBodyContent = document.getElementById('bookBodyContent');
-                if (bookBodyContent && savedBookData.bookBodyContent) bookBodyContent.innerHTML = savedBookData.bookBodyContent;
-            }
-
-            // Menu interactions
-            const menuToggle = document.getElementById('menuToggle');
-            const menuOverlay = document.getElementById('menuOverlay');
-            const menuLabel = document.getElementById('menuLabel');
-            const menuLinks = document.querySelectorAll('.menu-link');
-            const submenuParent = document.getElementById('submenuParent');
-            const submenuToggle = document.getElementById('submenuToggle');
-
-            if (!menuToggle || !menuOverlay) return;
-
-            menuToggle.addEventListener('click', (e) => {
-                e.preventDefault();
-                document.body.classList.toggle('menu-open');
-                menuOverlay.classList.toggle('active');
-                menuLabel.innerText = menuOverlay.classList.contains('active') ? 'zatvori' : 'meni';
-                if (!menuOverlay.classList.contains('active')) submenuParent.classList.remove('open');
-            });
-
-            submenuToggle.addEventListener('click', (e) => {
-                e.stopPropagation();
-                submenuParent.classList.toggle('open');
-            });
-
-            menuLinks.forEach(link => {
-                link.addEventListener('click', () => {
-                    document.body.classList.remove('menu-open');
-                    menuOverlay.classList.remove('active');
-                    menuLabel.innerText = 'meni';
-                    submenuParent.classList.remove('open');
-                });
-            });
-        });
-    </script>
+        } catch (error) {
+            console.log("Using default fallback content.");
+        }
+    });
+</script>
 </body>
 </html>
