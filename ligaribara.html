@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liga ribara</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body, html {
+            height: 100%;
+            width: 100%;
+            background-color: #fff;
+            color: #000;
+            font-family: Garamond, "EB Garamond", Georgia, serif;
+            overflow-x: hidden;
+            opacity: 0;
+            animation: fadeIn 0.5s ease-in-out forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        /* Subtle border frame */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            right: 15px;
+            bottom: 15px;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        .top-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            align-items: flex-start;
+            padding: 35px 50px;
+            z-index: 1000;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0) 100%);
+        }
+
+        .menu-container {
+            position: relative;
+        }
+
+        .menu-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            padding: 10px;
+            opacity: 0.5;
+            transition: opacity 0.3s ease;
+        }
+
+        .menu-btn:hover {
+            opacity: 1;
+        }
+
+        .menu-line {
+            display: block;
+            width: 26px;
+            height: 1.5px;
+            background-color: #000;
+            margin-bottom: 6px;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .menu-line:last-of-type {
+            margin-bottom: 0;
+        }
+
+        .menu-text {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-top: 6px;
+            color: #000;
+        }
+
+        /* Dropdown Menu Box */
+        .menu-dropdown {
+            position: absolute;
+            top: calc(100% + 5px);
+            right: 10px;
+            background-color: #fff;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            min-width: 180px;
+            padding: 15px 20px;
+            z-index: 99998;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-8px);
+            transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+        }
+
+        .menu-dropdown.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .menu-nav {
+            list-style: none;
+            text-align: right;
+        }
+
+        .menu-nav > li {
+            margin-bottom: 12px;
+        }
+
+        .menu-nav > li:last-child {
+            margin-bottom: 0;
+        }
+
+        .menu-nav a {
+            font-size: 1.25rem;
+            text-decoration: none;
+            color: #000;
+            font-weight: normal;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: color 0.2s;
+            display: inline-block;
+        }
+
+        .menu-nav a:hover {
+            color: #666;
+        }
+
+        /* Submenu styling */
+        .has-submenu {
+            cursor: pointer;
+        }
+
+        .submenu {
+            list-style: none;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            text-align: right;
+            margin-top: 4px;
+        }
+
+        .has-submenu.open .submenu {
+            max-height: 150px;
+        }
+
+        .submenu li {
+            margin-top: 6px;
+        }
+
+        .submenu a {
+            font-size: 1.05rem;
+            font-weight: normal;
+            color: #555;
+        }
+
+        .submenu a:hover {
+            color: #000;
+        }
+
+        /* Book Layout Container */
+        .book-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 160px 40px 80px 40px;
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 60px;
+            align-items: start;
+        }
+
+        .book-image-col img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        .book-info-col h1 {
+            font-size: clamp(2.2rem, 3.8vw, 3.4rem);
+            font-weight: normal;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+            margin-bottom: 10px;
+        }
+
+        .book-subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 25px;
+        }
+
+        .book-meta {
+            font-size: 1rem;
+            color: #444;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            border-top: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+            padding: 15px 0;
+        }
+
+        .book-meta div {
+            margin-bottom: 6px;
+        }
+
+        .book-body-content {
+            font-size: 1.15rem;
+            line-height: 1.75;
+            color: #222;
+        }
+
+        .book-body-content h2 {
+            font-size: 1.4rem;
+            font-weight: normal;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        .book-body-content p {
+            margin-bottom: 15px;
+        }
+
+        /* Menu button animation state */
+        body.menu-open .menu-btn {
+            opacity: 1;
+        }
+        body.menu-open .menu-line:nth-child(1) {
+            transform: translateY(7.5px) rotate(45deg);
+        }
+        body.menu-open .menu-line:nth-child(2) {
+            opacity: 0;
+        }
+        body.menu-open .menu-line:nth-child(3) {
+            transform: translateY(-7.5px) rotate(-45deg);
+        }
+
+        @media (max-width: 900px) {
+            body::after { display: none; }
+            .book-container {
+                grid-template-columns: 1fr;
+                padding: 120px 20px 40px 20px;
+                gap: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Navigation Bar -->
+    <div class="top-bar">
+        <div class="menu-container">
+            <button class="menu-btn" id="menuToggle" type="button" aria-label="Toggle menu">
+                <span class="menu-line"></span>
+                <span class="menu-line"></span>
+                <span class="menu-line"></span>
+                <span class="menu-text" id="menuLabel">meni</span>
+            </button>
+
+            <!-- Dropdown Menu Box -->
+            <div class="menu-dropdown" id="menuDropdown">
+                <ul class="menu-nav">
+                    <li><a href="index.html" class="menu-link">Naslovnica</a></li>
+                    <li class="has-submenu" id="submenuToggle">
+                        <a href="javascript:void(0);">Romani</a>
+                        <ul class="submenu">
+                            <li><a href="temeljenjekuce.html" class="menu-link">Temeljenje kuće</a></li>
+                            <li><a href="ligaribara.html" class="menu-link">Liga ribara</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Book Content Layout -->
+    <main class="book-container">
+        <div class="book-image-col">
+            <img id="bookImage" src="https://i.imgur.com/B46NENg.jpeg" alt="Naslovnica knjige">
+        </div>
+        <div class="info-col"> <!-- Fixed class alignment if any -->
+        <div class="book-info-col">
+            <h1 id="bookTitle">Liga ribara</h1>
+            <div class="book-subtitle" id="bookSubtitle">Roman</div>
+            
+            <div class="book-meta">
+                <div><strong>Godina:</strong> <span id="bookYear">2024.</span></div>
+                <div id="publisherWrapper"><strong>Izdavač:</strong> <span id="bookPublisher">-</span></div>
+                <div id="infoWrapper"><strong>Info:</strong> <span id="bookInfo">-</span></div>
+                <div><strong>ISBN:</strong> <span id="bookIsbn">-</span></div>
+            </div>
+
+            <div class="book-body-content" id="bookBodyContent">
+                <p>Učitavanje sadržaja...</p>
+            </div>
+        </div>
+        </div>
+    </main>
+
+    <!-- Scripts: CMS Data Loader & Menu Toggle -->
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Pointing to the new JSON file for this page
+            try {
+                const res = await fetch('content/ligaribara.json');
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.bookImageSrc) document.getElementById('bookImage').src = data.bookImageSrc;
+                    if (data.bookTitle) document.getElementById('bookTitle').innerText = data.bookTitle;
+                    if (data.bookSubtitle) document.getElementById('bookSubtitle').innerText = data.bookSubtitle;
+                    if (data.bookYear) document.getElementById('bookYear').innerText = data.bookYear;
+                    
+                    if (data.bookPublisher) {
+                        document.getElementById('bookPublisher').innerText = data.bookPublisher;
+                    } else {
+                        const pubWrap = document.getElementById('publisherWrapper');
+                        if (pubWrap) pubWrap.style.display = 'none';
+                    }
+
+                    if (data.bookInfo) {
+                        document.getElementById('bookInfo').innerText = data.bookInfo;
+                    } else {
+                        const infoWrap = document.getElementById('infoWrapper');
+                        if (infoWrap) infoWrap.style.display = 'none';
+                    }
+
+                    if (data.bookIsbn) document.getElementById('bookIsbn').innerText = data.bookIsbn;
+                    if (data.bookBodyContent) document.getElementById('bookBodyContent').innerHTML = data.bookBodyContent;
+                }
+            } catch (e) {
+                console.log("Using default fallback content.");
+            }
+
+            // Menu Interactions
+            const menuToggle = document.getElementById('menuToggle');
+            const menuDropdown = document.getElementById('menuDropdown');
+            const menuLabel = document.getElementById('menuLabel');
+            const menuLinks = document.querySelectorAll('.menu-link');
+            const submenuParent = document.getElementById('submenuToggle');
+
+            if (!menuToggle || !menuDropdown) return;
+
+            menuToggle.addEventListener('click', (e) => {
+                e.preventDefault();
+                document.body.classList.toggle('menu-open');
+                menuDropdown.classList.toggle('active');
+                if (menuLabel) {
+                    menuLabel.innerText = menuDropdown.classList.contains('active') ? 'zatvori' : 'meni';
+                }
+            });
+
+            if (submenuParent) {
+                submenuParent.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    submenuParent.classList.toggle('open');
+                });
+            }
+
+            document.addEventListener('click', (e) => {
+                if (!menuToggle.contains(e.target) && !menuDropdown.contains(e.target)) {
+                    document.body.classList.remove('menu-open');
+                    menuDropdown.classList.remove('active');
+                    if (submenuParent) submenuParent.classList.remove('open');
+                    if (menuLabel) {
+                        menuLabel.innerText = 'meni';
+                    }
+                }
+            });
+
+            menuLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    document.body.classList.remove('menu-open');
+                    menuDropdown.classList.remove('active');
+                    if (submenuParent) submenuParent.classList.remove('open');
+                    if (menuLabel) {
+                        menuLabel.innerText = 'meni';
+                    }
+                });
+            });
+        });
+    </script>
+    
+</body>
+</html>
