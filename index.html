@@ -20,19 +20,12 @@
         body, html {
             height: 100%;
             width: 100%;
-            background-color: #e7cfab;
+            background-color: #f6e2b7;
             color: #2F5233;
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
-            opacity: 0;
-            animation: fadeIn 0.5s ease-in-out forwards;
+            /* Uklonjen body opacity da tekst nikada ne bude poluprovidan */
         }
-
-        @keyframes fadeIn {
-            to { opacity: 1; }
-        }
-
-       
 
         .top-bar {
             position: fixed;
@@ -44,7 +37,7 @@
             align-items: flex-start;
             padding: 35px 50px;
             z-index: 1000;
-            background: linear-gradient(to bottom, rgba(231,207,171,0.95) 0%, rgba(231,207,171,0) 100%);
+            background: linear-gradient(to bottom, rgba(246,226,183,0.95) 0%, rgba(246,226,183,0) 100%);
         }
 
         .menu-container {
@@ -59,7 +52,7 @@
             flex-direction: column;
             align-items: flex-end;
             padding: 10px;
-            opacity: 0.7;
+            opacity: 0.8;
             transition: opacity 0.3s ease;
         }
 
@@ -95,7 +88,7 @@
             position: absolute;
             top: calc(100% + 5px);
             right: 10px;
-            background-color: #e7cfab;
+            background-color: #f6e2b7;
             border: 1px solid rgba(47, 82, 51, 0.15);
             box-shadow: 0 10px 30px rgba(47, 82, 51, 0.05);
             min-width: 220px;
@@ -213,7 +206,9 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            filter: contrast(102%);
+            /* Prozirnost primijenjena ISKLJUČIVO na sliku */
+            opacity: ;
+            transition: opacity 0.3s ease;
         }
 
         /* Menu button animation state */
@@ -231,7 +226,6 @@
         }
 
         @media (max-width: 900px) {
-            body::after { display: none; }
             .main-container {
                 grid-template-columns: 1fr;
                 height: auto;
@@ -290,16 +284,16 @@
         
         <!-- Slika desno -->
         <div class="right-col">
-            <img id="heroImage" src="https://i.imgur.com/EPSj70x.jpeg" alt="Marija Andrijašević">
+            <img id="heroImage" src="https://i.imgur.com/XthCq9M.png" alt="Marija Andrijašević">
         </div>
     </main>
 
     <!-- Scripts: CMS Data Loader & Menu Toggle -->
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
-            // 1. Load content from Decap CMS JSON file
+            // 1. Load content from Decap CMS JSON file (s cache-busterom)
             try {
-                const res = await fetch('content/index.json');
+                const res = await fetch('content/index.json?v=' + new Date().getTime());
                 if (res.ok) {
                     const data = await res.json();
                     if (data.siteTitle) document.getElementById('mainTitle').innerHTML = data.siteTitle;
@@ -347,17 +341,4 @@
                 }
             });
 
-            menuLinks.forEach(link => {
-                link.addEventListener('click', () => {
-                    document.body.classList.remove('menu-open');
-                    menuDropdown.classList.remove('active');
-                    if (submenuParent) submenuParent.classList.remove('open');
-                    if (menuLabel) {
-                        menuLabel.innerText = 'meni';
-                    }
-                });
-            });
-        });
-    </script>
-</body>
-</html>
+    ```
