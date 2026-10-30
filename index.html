@@ -24,7 +24,6 @@
             color: #2F5233;
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
-            /* Uklonjen body opacity da tekst nikada ne bude poluprovidan */
         }
 
         .top-bar {
@@ -52,7 +51,7 @@
             flex-direction: column;
             align-items: flex-end;
             padding: 10px;
-            opacity: 0.8;
+            opacity: 0.7;
             transition: opacity 0.3s ease;
         }
 
@@ -206,8 +205,8 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            /* Prozirnost primijenjena ISKLJUČIVO na sliku */
-            opacity: ;
+            /* Prozirnost stoji isključivo na slici */
+            opacity: 0.;
             transition: opacity 0.3s ease;
         }
 
@@ -297,7 +296,10 @@
                 if (res.ok) {
                     const data = await res.json();
                     if (data.siteTitle) document.getElementById('mainTitle').innerHTML = data.siteTitle;
-                    if (data.heroImageSrc) document.getElementById('heroImage').src = data.heroImageSrc;
+                    // Provjeravamo da slika stvarno postoji u JSON-u prije nego je zamijenimo
+                    if (data.heroImageSrc && data.heroImageSrc.trim() !== "") {
+                        document.getElementById('heroImage').src = data.heroImageSrc;
+                    }
                 }
             } catch (e) {
                 console.log("Using default fallback content.");
@@ -312,6 +314,7 @@
 
             if (!menuToggle || !menuDropdown) return;
 
+            // Open/Close menu on click
             menuToggle.addEventListener('click', (e) => {
                 e.preventDefault();
                 document.body.classList.toggle('menu-open');
@@ -341,4 +344,18 @@
                 }
             });
 
-    ```
+            // Close menu when a link inside is clicked
+            menuLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    document.body.classList.remove('menu-open');
+                    menuDropdown.classList.remove('active');
+                    if (submenuParent) submenuParent.classList.remove('open');
+                    if (menuLabel) {
+                        menuLabel.innerText = 'meni';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
