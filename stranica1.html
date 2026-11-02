@@ -3,7 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Usta puna mora - Jurica Pavičić</title>
+    <title>Zemlja bez sutona – Marija Andrijašević</title>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
         * {
             box-sizing: border-box;
@@ -12,33 +18,15 @@
         }
 
         body, html {
-            height: 100%;
+            min-height: 100%;
             width: 100%;
-            background-color: #fff;
-            color: #000;
-            font-family: Garamond, "EB Garamond", Georgia, serif;
-            overflow-x: hidden;
-            opacity: 0;
-            animation: fadeIn 0.5s ease-in-out forwards;
+            background-color: #f6e2b7;
+            color: #2F5233;
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
         }
 
-        @keyframes fadeIn {
-            to { opacity: 1; }
-        }
-
-        /* Subtle border frame */
-        body::after {
-            content: '';
-            position: fixed;
-            top: 15px;
-            left: 15px;
-            right: 15px;
-            bottom: 15px;
-            border: 1px solid rgba(0, 0, 0, 0.08);
-            pointer-events: none;
-            z-index: 9999;
-        }
-
+        /* Navigacija */
         .top-bar {
             position: fixed;
             top: 0;
@@ -49,7 +37,6 @@
             align-items: flex-start;
             padding: 35px 50px;
             z-index: 1000;
-            background: linear-gradient(to bottom, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0) 100%);
         }
 
         .menu-container {
@@ -64,7 +51,7 @@
             flex-direction: column;
             align-items: flex-end;
             padding: 10px;
-            opacity: 0.5;
+            opacity: 0.7;
             transition: opacity 0.3s ease;
         }
 
@@ -76,7 +63,7 @@
             display: block;
             width: 26px;
             height: 1.5px;
-            background-color: #000;
+            background-color: #2F5233;
             margin-bottom: 6px;
             transition: transform 0.3s ease, opacity 0.3s ease;
         }
@@ -86,27 +73,26 @@
         }
 
         .menu-text {
-            font-size: 0.75rem;
+            font-size: 0.65rem;
             text-transform: uppercase;
             letter-spacing: 1.5px;
             margin-top: 6px;
-            color: #000;
+            color: #2F5233;
+            font-weight: 500;
         }
 
-        /* Dropdown Menu Box */
         .menu-dropdown {
             position: absolute;
-            top: calc(100% + 5px);
-            right: 10px;
-            background-color: #fff;
-            border: 1px solid rgba(0, 0, 0, 0.08);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-            min-width: 180px;
-            padding: 15px 20px;
+            top: calc(100% + 12px);
+            right: 0;
+            background-color: #f6e2b7;
+            border: 1px solid rgba(47, 82, 51, 0.2);
+            min-width: 240px;
+            padding: 20px 24px;
             z-index: 99998;
             opacity: 0;
             visibility: hidden;
-            transform: translateY(-8px);
+            transform: translateY(-6px);
             transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
         }
 
@@ -122,7 +108,7 @@
         }
 
         .menu-nav > li {
-            margin-bottom: 12px;
+            margin-bottom: 14px;
         }
 
         .menu-nav > li:last-child {
@@ -130,10 +116,10 @@
         }
 
         .menu-nav a {
-            font-size: 1.25rem;
+            font-size: 1.05rem;
             text-decoration: none;
-            color: #000;
-            font-weight: normal;
+            color: #2F5233;
+            font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             transition: color 0.2s;
@@ -141,10 +127,9 @@
         }
 
         .menu-nav a:hover {
-            color: #666;
+            color: #4A7A4F;
         }
 
-        /* Submenu styling for Romani / Subitems */
         .has-submenu {
             cursor: pointer;
         }
@@ -155,114 +140,139 @@
             overflow: hidden;
             transition: max-height 0.3s ease-out;
             text-align: right;
-            margin-top: 4px;
-        }
-
-        .has-submenu.open .submenu {
-            max-height: 150px;
-        }
-
-        .submenu li {
             margin-top: 6px;
         }
 
+        .has-submenu.open .submenu {
+            max-height: 250px;
+        }
+
+        .submenu li {
+            margin-top: 8px;
+        }
+
         .submenu a {
-            font-size: 1.05rem;
-            font-weight: normal;
-            color: #555;
+            font-size: 0.9rem;
+            font-weight: 400;
+            color: #426946;
+            text-transform: none;
         }
 
-        .submenu a:hover {
-            color: #000;
-        }
+        body.menu-open .menu-btn { opacity: 1; }
+        body.menu-open .menu-line:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+        body.menu-open .menu-line:nth-child(2) { opacity: 0; }
+        body.menu-open .menu-line:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
 
-        /* Book Layout Container */
-        .book-container {
-            max-width: 1000px;
+        /* Pročišćeni Editorial Layout */
+        .editorial-wrapper {
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 160px 40px 80px 40px;
+            min-height: 100vh;
+            padding: 160px 60px 100px 60px;
             display: grid;
-            grid-template-columns: 1fr 1.2fr;
-            gap: 60px;
+            grid-template-columns: 1fr 340px;
+            gap: 100px;
             align-items: start;
         }
 
-        .book-image-col img {
-            width: 100%;
-            height: auto;
-            object-fit: cover;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        /* Lijevi dio: Tipografija */
+        .content-col {
+            display: flex;
+            flex-direction: column;
         }
 
-        .book-info-col h1 {
-            font-size: clamp(2.2rem, 3.8vw, 3.4rem);
-            font-weight: normal;
+        .meta-header {
+            display: flex;
+            gap: 20px;
+            font-size: 0.7rem;
             text-transform: uppercase;
-            letter-spacing: -0.5px;
-            margin-bottom: 10px;
+            letter-spacing: 2px;
+            opacity: 0.6;
+            margin-bottom: 24px;
+            font-weight: 500;
         }
 
-        .book-subtitle {
-            font-size: 1.2rem;
-            color: #666;
+        .book-title {
+            font-size: clamp(2.8rem, 4.5vw, 4.8rem);
+            font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-bottom: 25px;
+            line-height: 0.92;
+            color: #2F5233;
+            margin-bottom: 40px;
         }
 
-        .book-meta {
-            font-size: 1rem;
-            color: #444;
-            margin-bottom: 30px;
-            line-height: 1.6;
-            border-top: 1px solid #eee;
-            border-bottom: 1px solid #eee;
-            padding: 15px 0;
+        .editorial-body {
+            max-width: 520px;
+            margin-bottom: 50px;
         }
 
-        .book-meta div {
-            margin-bottom: 6px;
+        .editorial-body p {
+            font-size: 1.05rem;
+            font-weight: 300;
+            line-height: 1.7;
+            color: #2F5233;
+            margin-bottom: 20px;
+            opacity: 0.9;
         }
 
-        .book-body-content {
-            font-size: 1.15rem;
-            line-height: 1.75;
-            color: #222;
+        .back-nav {
+            margin-top: 20px;
         }
 
-        .book-body-content h2 {
-            font-size: 1.4rem;
-            font-weight: normal;
+        .back-link {
+            font-size: 0.75rem;
             text-transform: uppercase;
+            letter-spacing: 2px;
+            text-decoration: none;
+            color: #2F5233;
+            font-weight: 600;
+            transition: opacity 0.2s;
+        }
+
+        .back-link:hover {
+            opacity: 0.5;
+        }
+
+        /* Desni dio: Čisti vizualni element bez ramova i sjenki */
+        .visual-col {
+            margin-top: 10px;
+        }
+
+        .visual-media {
+            width: 100%;
+            display: block;
+        }
+
+        .visual-media img {
+            width: 100%;
+            height: auto;
+            display: block;
+            opacity: 0.75;
+            transition: opacity 0.3s ease;
+        }
+
+        .visual-media img:hover {
+            opacity: 0.95;
+        }
+
+        .visual-caption {
+            font-size: 0.7rem;
             letter-spacing: 0.5px;
-            margin-top: 25px;
-            margin-bottom: 15px;
-        }
-
-        .book-body-content p {
-            margin-bottom: 15px;
-        }
-
-        /* Menu button animation state */
-        body.menu-open .menu-btn {
-            opacity: 1;
-        }
-        body.menu-open .menu-line:nth-child(1) {
-            transform: translateY(7.5px) rotate(45deg);
-        }
-        body.menu-open .menu-line:nth-child(2) {
-            opacity: 0;
-        }
-        body.menu-open .menu-line:nth-child(3) {
-            transform: translateY(-7.5px) rotate(-45deg);
+            opacity: 0.5;
+            margin-top: 12px;
+            text-align: left;
+            font-weight: 400;
         }
 
         @media (max-width: 900px) {
-            body::after { display: none; }
-            .book-container {
+            .editorial-wrapper {
                 grid-template-columns: 1fr;
-                padding: 120px 20px 40px 20px;
-                gap: 30px;
+                padding: 120px 24px 60px 24px;
+                gap: 60px;
+            }
+            .visual-col {
+                max-width: 280px;
             }
         }
     </style>
@@ -279,14 +289,17 @@
                 <span class="menu-text" id="menuLabel">meni</span>
             </button>
 
-            <!-- Dropdown Menu Box -->
             <div class="menu-dropdown" id="menuDropdown">
                 <ul class="menu-nav">
-                    <li><a href="index.html" class="menu-link">Naslovnica</a></li>
-                    <li class="has-submenu" id="submenuToggle">
+                    <li><a href="index.html" class="menu-link">Početna</a></li>
+                    <li><a href="biografija.html" class="menu-link">Biografija</a></li>
+                    <li class="has-submenu open" id="submenuToggle">
                         <a href="javascript:void(0);">Romani</a>
-                        <ul class="submenu">
-                            <li><a href="stranica1.html" class="menu-link">Usta puna mora</a></li>
+                        <ul class="submenu" style="max-height: 250px;">
+                            <li><a href="stranica1.html" class="menu-link" style="font-weight: 600;">Zemlja bez sutona</a></li>
+                            <li><a href="temeljenjekuce.html" class="menu-link">Temeljenje kuće</a></li>
+                            <li><a href="ligaribara.html" class="menu-link">Liga ribara</a></li>
+                            <li><a href="stranica4.html" class="menu-link">Davide, svašta su mi radili</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -294,84 +307,54 @@
         </div>
     </div>
 
-    <!-- Book Content Layout -->
-    <main class="book-container">
-        <div class="book-image-col">
-            <img id="bookImage" src="https://i.imgur.com/h8Yv6Jp.jpeg" alt="Naslovnica knjige">
-        </div>
-        <div class="book-info-col">
-            <h1 id="bookTitle">Usta puna mora</h1>
-            <div class="book-subtitle" id="bookSubtitle">Roman</div>
+    <!-- Main Content -->
+    <main class="editorial-wrapper">
+        <article class="content-col">
+            <div class="meta-header">
+                <span>Roman</span>
+                <span>—</span>
+                <span>Fraktura, 2021.</span>
+            </div>
             
-            <div class="book-meta">
-                <div><strong>Godina:</strong> <span id="bookYear">2024.</span></div>
-                <div id="publisherWrapper"><strong>Izdavač:</strong> <span id="bookPublisher">-</span></div>
-                <div id="infoWrapper"><strong>Info:</strong> <span id="bookInfo">-</span></div>
-                <div><strong>ISBN:</strong> <span id="bookIsbn">-</span></div>
+            <h1 class="book-title">Zemlja bez<br>sutona</h1>
+
+            <div class="editorial-body">
+                <p>opis knjige</p>
             </div>
 
-            <div class="book-body-content" id="bookBodyContent">
-                <p>Učitavanje sadržaja...</p>
+            <div class="back-nav">
+                <a href="index.html" class="back-link">&#8592; Povratak</a>
             </div>
-        </div>
+        </article>
+
+        <!-- Svedena i čista prezentacija slike -->
+        <aside class="visual-col">
+            <div class="visual-media">
+                <img src=https://i.imgur.com/VDKx2tY.jpeg" alt="Zemlja bez sutona" referrerpolicy="no-referrer" onerror="this.src='slika.png';">
+            </div>
+            <p class="visual-caption">Arhivski vizual / Detalj</p>
+        </aside>
     </main>
 
-    <!-- Scripts: CMS Data Loader & Menu Toggle -->
+    <!-- Scripts -->
     <script>
-        document.addEventListener('DOMContentLoaded', async () => {
-            // 1. Load book content from Decap CMS JSON file
-            try {
-                const res = await fetch('content/book.json');
-                if (res.ok) {
-                    const data = await res.json();
-                    if (data.bookTitle) document.getElementById('bookTitle').innerText = data.bookTitle;
-                    if (data.bookSubtitle) document.getElementById('bookSubtitle').innerText = data.bookSubtitle;
-                    if (data.bookYear) document.getElementById('bookYear').innerText = data.bookYear;
-                    
-                    if (data.bookPublisher) {
-                        document.getElementById('bookPublisher').innerText = data.bookPublisher;
-                    } else {
-                        document.getElementById('publisherWrapper').style.display = 'none';
-                    }
-
-                    if (data.bookInfo) {
-                        document.getElementById('bookInfo').innerText = data.bookInfo;
-                    } else {
-                        document.getElementById('infoWrapper').style.display = 'none';
-                    }
-
-                    if (data.bookIsbn) document.getElementById('bookIsbn').innerText = data.bookIsbn;
-                    
-                    // Only override image if bookImageSrc is defined and not empty in JSON
-                    if (data.bookImageSrc && data.bookImageSrc.trim() !== '') {
-                        document.getElementById('bookImage').src = data.bookImageSrc;
-                    }
-
-                    if (data.bookBodyContent) document.getElementById('bookBodyContent').innerHTML = data.bookBodyContent;
-                }
-            } catch (e) {
-                console.log("Using default fallback content.");
-            }
-
-            // 2. Menu Interactions
+        document.addEventListener('DOMContentLoaded', () => {
             const menuToggle = document.getElementById('menuToggle');
             const menuDropdown = document.getElementById('menuDropdown');
             const menuLabel = document.getElementById('menuLabel');
-            const menuLinks = document.querySelectorAll('.menu-link');
             const submenuParent = document.getElementById('submenuToggle');
 
-            if (!menuToggle || !menuDropdown) return;
+            if (menuToggle && menuDropdown) {
+                menuToggle.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    document.body.classList.toggle('menu-open');
+                    menuDropdown.classList.toggle('active');
+                    if (menuLabel) {
+                        menuLabel.innerText = menuDropdown.classList.contains('active') ? 'zatvori' : 'meni';
+                    }
+                });
+            }
 
-            menuToggle.addEventListener('click', (e) => {
-                e.preventDefault();
-                document.body.classList.toggle('menu-open');
-                menuDropdown.classList.toggle('active');
-                if (menuLabel) {
-                    menuLabel.innerText = menuDropdown.classList.contains('active') ? 'zatvori' : 'meni';
-                }
-            });
-
-            // Toggle "Romani" accordion submenu
             if (submenuParent) {
                 submenuParent.addEventListener('click', (e) => {
                     e.stopPropagation();
@@ -379,9 +362,8 @@
                 });
             }
 
-            // Close dropdown when clicking outside
             document.addEventListener('click', (e) => {
-                if (!menuToggle.contains(e.target) && !menuDropdown.contains(e.target)) {
+                if (menuToggle && menuDropdown && !menuToggle.contains(e.target) && !menuDropdown.contains(e.target)) {
                     document.body.classList.remove('menu-open');
                     menuDropdown.classList.remove('active');
                     if (submenuParent) submenuParent.classList.remove('open');
@@ -389,17 +371,6 @@
                         menuLabel.innerText = 'meni';
                     }
                 }
-            });
-
-            menuLinks.forEach(link => {
-                link.addEventListener('click', () => {
-                    document.body.classList.remove('menu-open');
-                    menuDropdown.classList.remove('active');
-                    if (submenuParent) submenuParent.classList.remove('open');
-                    if (menuLabel) {
-                        menuLabel.innerText = 'meni';
-                    }
-                });
             });
         });
     </script>
